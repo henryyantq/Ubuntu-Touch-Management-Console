@@ -15,3 +15,5 @@
 我的邮箱：
 yantq0927@gmail.com
 henry0927@outlook.com
+
+在 https://forums.ubports.com/ （UBports Forum）上找到我：@Evergardener
