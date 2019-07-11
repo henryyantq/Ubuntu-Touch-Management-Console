@@ -199,6 +199,7 @@ int main() {
 		}
 		else if (choice == 17) {
 			system("adb get-serialno");
+			cout << endl;
 		}
 	}	//功能列表循环
 }
