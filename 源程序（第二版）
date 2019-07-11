@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <ctime>
+#define _CRT_SECURE_NO_WARNINGS
 using namespace std;
 
 void adb_shell(char *cmd) {
@@ -11,7 +12,7 @@ void adb_shell(char *cmd) {
 }
 
 void cd(char *root) {
-	char cmd[200] = "cd "; 
+	char cmd[200] = "cd ";
 	adb_shell(strcat(cmd, root));
 }
 
@@ -33,8 +34,8 @@ void lapse(double dur) {
 	time_t start, end;
 	start = clock();
 	end = start;
-	while(1) {
-		if ((end - start)/CLOCKS_PER_SEC == dur) break;
+	while (1) {
+		if ((end - start) / CLOCKS_PER_SEC == dur) break;
 		end = clock();
 	}
 }
@@ -47,11 +48,11 @@ void apk_inst(char *filepath) {
 int main() {
 	int choice;
 	lapse(1);
-	cout << endl << "Ubuntu Touch 设备管理 (Mac OS X)\n";
+	cout << endl << "Ubuntu Touch 设备管理\n";
 	lapse(1);
 	cout << endl << "由 Henry Yan (@Evergardener) 制作" << endl << endl;
 	lapse(1);
-	cout << "您的设备是否安装了 adb 文件？\n1、是的\n2、否，请为我安装\n--> ";
+	cout << "您的设备是否安装了 adb 文件？\n1、是的\n2、否，请为我安装（仅限 Mac OS X）\n--> ";
 	cin >> choice;
 	if (choice == 2)
 		system("brew cask install android-platform-tools");
@@ -67,7 +68,7 @@ int main() {
 	}
 	lapse(1);
 	cout << endl;
-	while(1) {
+	while (1) {
 		char filepath1[200];
 		char filepath2[200];
 		cout << "功能列表：\n1. 查看设备的存储容量状态\n";
@@ -127,7 +128,7 @@ int main() {
 					break;
 				}	//找到 .apk 字样
 			}	//得到 apk 文件名
-			apk_name = new char [count];
+			apk_name = new char[count];
 			apk_name[count - 1] = '\0';
 			for (int i = flag + 1, k = 0, calc = 0; calc < count; calc++, i++, k++) {
 				apk_name[k] = filepath1[i];
@@ -186,7 +187,7 @@ int main() {
 			cin >> filepath1;
 			cout << "确保您的 Ubuntu Touch 设备已进入刷机模式（Fastboot）！\n";
 			char str[500] = "fastboot flash recovery ";
-			system(strcat(str,filepath1));
+			system(strcat(str, filepath1));
 		}
 		else if (choice == 15) {
 			system("adb shell");
