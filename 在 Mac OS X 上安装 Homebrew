@@ -1,0 +1,3 @@
+- 打开 Mac 上的终端（Terminal）
+- 输入 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)" 并回车
+- 输入 brew --help 查看是否安装成功
