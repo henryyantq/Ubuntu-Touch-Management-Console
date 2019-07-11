@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <ctime>
+#define _CRT_SECURE_NO_WARNINGS
 using namespace std;
 
 void adb_shell(char *cmd) {
@@ -11,7 +12,7 @@ void adb_shell(char *cmd) {
 }
 
 void cd(char *root) {
-	char cmd[200] = "cd "; 
+	char cmd[200] = "cd ";
 	adb_shell(strcat(cmd, root));
 }
 
@@ -33,8 +34,8 @@ void lapse(double dur) {
 	time_t start, end;
 	start = clock();
 	end = start;
-	while(1) {
-		if ((end - start)/CLOCKS_PER_SEC == dur) break;
+	while (1) {
+		if ((end - start) / CLOCKS_PER_SEC == dur) break;
 		end = clock();
 	}
 }
@@ -47,43 +48,43 @@ void apk_inst(char *filepath) {
 int main() {
 	int choice;
 	lapse(1);
-	cout << endl << "Ubuntu Touch Éè±¸¹ÜÀí (Mac OS X)\n";
+	cout << endl << "Ubuntu Touch è®¾å¤‡ç®¡ç†\n";
 	lapse(1);
-	cout << endl << "ÓÉ Henry Yan (@Evergardener) ÖÆ×÷" << endl << endl;
+	cout << endl << "ç”± Henry Yan (@Evergardener) åˆ¶ä½œ" << endl << endl;
 	lapse(1);
-	cout << "ÄúµÄÉè±¸ÊÇ·ñ°²×°ÁË adb ÎÄ¼þ£¿\n1¡¢ÊÇµÄ\n2¡¢·ñ£¬ÇëÎªÎÒ°²×°\n--> ";
+	cout << "æ‚¨çš„è®¾å¤‡æ˜¯å¦å®‰è£…äº† adb æ–‡ä»¶ï¼Ÿ\n1ã€æ˜¯çš„\n2ã€å¦ï¼Œè¯·ä¸ºæˆ‘å®‰è£…ï¼ˆä»…é™ Mac OS Xï¼‰\n--> ";
 	cin >> choice;
 	if (choice == 2)
 		system("brew cask install android-platform-tools");
-	cout << endl << "ÕýÔÚ³õÊ¼»¯ ADB ·þÎñ¶Ë...\n\n";
+	cout << endl << "æ­£åœ¨åˆå§‹åŒ– ADB æœåŠ¡ç«¯...\n\n";
 	system("adb kill-server");
 	system("adb start-server");
 	while (1) {
 		system("adb devices");
-		cout << "ÄúµÄ Ubuntu Touch Éè±¸ÊÇ·ñ±»Ê¶±ðÕýÈ·£¿\n1¡¢ÊÇµÄ\n2¡¢ÔÙÊÔÒ»´Î\n--> ";
+		cout << "æ‚¨çš„ Ubuntu Touch è®¾å¤‡æ˜¯å¦è¢«è¯†åˆ«æ­£ç¡®ï¼Ÿ\n1ã€æ˜¯çš„\n2ã€å†è¯•ä¸€æ¬¡\n--> ";
 		cin >> choice;
 		if (choice == 1) break;
 		else cout << endl;
 	}
 	lapse(1);
 	cout << endl;
-	while(1) {
+	while (1) {
 		char filepath1[200];
 		char filepath2[200];
-		cout << "¹¦ÄÜÁÐ±í£º\n1. ²é¿´Éè±¸µÄ´æ´¢ÈÝÁ¿×´Ì¬\n";
-		cout << "2. ¸´ÖÆ±¾µØÎÄ¼þµ½Éè±¸Ö¸¶¨Ä¿Â¼\n3. ¸´ÖÆÉè±¸ÎÄ¼þµ½±¾µØÖ¸¶¨Ä¿Â¼\n4. °²×° Android °üµ½Éè±¸£¨ÐëÒÑ²¿Êð Anbox£©\n5. Ð¶ÔØ Android Ó¦ÓÃ³ÌÐò\n";
-		cout << "6. µ¼³öÉè±¸Ïà²á\n7. ÖØÔØ´æ´¢ÏµÍ³¿É¶ÁÐ´\n8. ÖØÆôÉè±¸ÖÁË¢»úÄ£Ê½\n9. Ç¿ÖÆ¹Ø»ú\n10. Ç¿ÖÆÖØÐÂÆô¶¯\n";
-		cout << "11. ÖØÐÂÆô¶¯²¢»¹Ô­³ö³§ÉèÖÃ\n12. ·ÃÎÊÉè±¸ÖÕ¶Ë" << endl << "--> ";
+		cout << "åŠŸèƒ½åˆ—è¡¨ï¼š\n1. æŸ¥çœ‹è®¾å¤‡çš„å­˜å‚¨å®¹é‡çŠ¶æ€\n";
+		cout << "2. å¤åˆ¶æœ¬åœ°æ–‡ä»¶åˆ°è®¾å¤‡æŒ‡å®šç›®å½•\n3. å¤åˆ¶è®¾å¤‡æ–‡ä»¶åˆ°æœ¬åœ°æŒ‡å®šç›®å½•\n4. å®‰è£… Android åŒ…åˆ°è®¾å¤‡ï¼ˆé¡»å·²éƒ¨ç½² Anboxï¼‰\n5. å¸è½½ Android åº”ç”¨ç¨‹åº\n";
+		cout << "6. å¯¼å‡ºè®¾å¤‡ç›¸å†Œ\n7. é‡è½½å­˜å‚¨ç³»ç»Ÿå¯è¯»å†™\n8. é‡å¯è®¾å¤‡è‡³åˆ·æœºæ¨¡å¼\n9. å¼ºåˆ¶å…³æœº\n10. å¼ºåˆ¶é‡æ–°å¯åŠ¨\n";
+		cout << "11. é‡æ–°å¯åŠ¨å¹¶è¿˜åŽŸå‡ºåŽ‚è®¾ç½®\n12. ä»Žåˆ·æœºæ¨¡å¼é‡å¯è‡³ Ubuntu Touch\n13. ä»Žåˆ·æœºæ¨¡å¼é‡å¯è‡³ Recovery\n14. ä»Žåˆ·æœºæ¨¡å¼åˆ·å…¥éžå®˜æ–¹ Recovery\n15. è®¿é—®è®¾å¤‡ç»ˆç«¯\n16. é‡æ–°è¿žæŽ¥è®¾å¤‡\n17. è¯»å–è®¾å¤‡çš„åºåˆ—å·" << endl << "--> ";
 		cin >> choice;
 		cout << endl;
 		if (choice == 1) {
 			adb_shell("df -H");
 			cout << endl;
-		}	//Ñ¡Ïî1
+		}	//é€‰é¡¹1
 		else if (choice == 2) {
-			cout << "±¾µØÎÄ¼þÂ·¾¶£º";
+			cout << "æœ¬åœ°æ–‡ä»¶è·¯å¾„ï¼š";
 			cin >> filepath1;
-			cout << "Éè±¸Ä¿±êÄ¿Â¼Â·¾¶Ñ¡Ôñ£º\n1. Ö÷Ä¿Â¼\n2. Documents\n3. Downloads\n4. Music\n5. Pictures\n6. Videos\n--> ";
+			cout << "è®¾å¤‡ç›®æ ‡ç›®å½•è·¯å¾„é€‰æ‹©ï¼š\n1. ä¸»ç›®å½•\n2. Documents\n3. Downloads\n4. Music\n5. Pictures\n6. Videos\n--> ";
 			cin >> choice;
 			if (choice == 1)
 				file_push(filepath1, "/home/phablet");
@@ -98,21 +99,21 @@ int main() {
 			else if (choice == 6)
 				file_push(filepath1, "/home/phablet/Videos");
 			cout << endl;
-		}	//Ñ¡Ïî2
+		}	//é€‰é¡¹2
 		else if (choice == 3) {
-			cout << "Éè±¸ÎÄ¼þÂ·¾¶£º";
+			cout << "è®¾å¤‡æ–‡ä»¶è·¯å¾„ï¼š";
 			cin >> filepath2;
-			cout << "±¾µØÄ¿±êÄ¿Â¼Â·¾¶£º";
+			cout << "æœ¬åœ°ç›®æ ‡ç›®å½•è·¯å¾„ï¼š";
 			cin >> filepath1;
 			file_pull(filepath2, filepath1);
 			cout << endl;
-		}	//Ñ¡Ïî3
+		}	//é€‰é¡¹3
 		else if (choice == 4) {
 			char save_path[300] = "/home/phablet/Downloads";
 			char *apk_name;
 			int count = 0;
 			int flag;
-			cout << "±¾µØ°²×¿ÎÄ¼þÂ·¾¶£º";
+			cout << "æœ¬åœ°å®‰å“æ–‡ä»¶è·¯å¾„ï¼š";
 			cin >> filepath1;
 			file_push(filepath1, save_path);
 			for (int i = 0; i < 500; i++) {
@@ -125,37 +126,37 @@ int main() {
 						}
 					}
 					break;
-				}	//ÕÒµ½ .apk ×ÖÑù
-			}	//µÃµ½ apk ÎÄ¼þÃû
-			apk_name = new char [count];
+				}	//æ‰¾åˆ° .apk å­—æ ·
+			}	//å¾—åˆ° apk æ–‡ä»¶å
+			apk_name = new char[count];
 			apk_name[count - 1] = '\0';
 			for (int i = flag + 1, k = 0, calc = 0; calc < count; calc++, i++, k++) {
 				apk_name[k] = filepath1[i];
-			}	//µÃµ½ apk ÎÄ¼þÃû
-			cout << "APK ÎÄ¼þÃû£º" << apk_name << endl;
+			}	//å¾—åˆ° apk æ–‡ä»¶å
+			cout << "APK æ–‡ä»¶åï¼š" << apk_name << endl;
 			strcat(save_path, "/");
 			strcat(save_path, apk_name);
 			apk_inst(save_path);
 			cout << endl;
-		}	//Ñ¡Ïî4
+		}	//é€‰é¡¹4
 		else if (choice == 5) {
 			char package[200];
 			char uninst[500] = "adb uninstall ";
-			cout << "APK °üÁÐ±íÈçÏÂ£º" << endl;
+			cout << "APK åŒ…åˆ—è¡¨å¦‚ä¸‹ï¼š" << endl;
 			adb_shell("adb shell pm list packages");
-			cout << endl << "ÇëÊäÈë¶ÔÓ¦°üÃûÒÔÐ¶ÔØ Android Ó¦ÓÃ³ÌÐò£º";
+			cout << endl << "è¯·è¾“å…¥å¯¹åº”åŒ…åä»¥å¸è½½ Android åº”ç”¨ç¨‹åºï¼š";
 			cin >> package;
 			adb_shell(strcat(uninst, package));
 			cout << endl;
-		}	//Ñ¡Ïî5
+		}	//é€‰é¡¹5
 		else if (choice == 6) {
-			cout << "ÇëÊäÈë±¾µØÄ¿±êÄ¿Â¼Â·¾¶£º";
+			cout << "è¯·è¾“å…¥æœ¬åœ°ç›®æ ‡ç›®å½•è·¯å¾„ï¼š";
 			cin >> filepath1;
 			file_pull("/home/phablet/Pictures", filepath1);
 			cout << endl;
 		}
 		else if (choice == 7) {
-			cout << "ÊäÈë¹ÜÀíÔ±£¨³¬¼¶ÓÃ»§È¨ÏÞ£©ÃÜÂëÒÔÍê³É²Ù×÷\n";
+			cout << "è¾“å…¥ç®¡ç†å‘˜ï¼ˆè¶…çº§ç”¨æˆ·æƒé™ï¼‰å¯†ç ä»¥å®Œæˆæ“ä½œ\n";
 			adb_shell("sudo mount -o remount,rw /");
 		}
 		else if (choice == 8) {
@@ -174,7 +175,30 @@ int main() {
 			system("fastboot reboot");
 		}
 		else if (choice == 12) {
-			system("adb shell");
+			system("fastboot reboot");
+			cout << endl;
 		}
-	}	//¹¦ÄÜÁÐ±íÑ­»·
+		else if (choice == 13) {
+			system("fastboot reboot recovery");
+			cout << endl;
+		}
+		else if (choice == 14) {
+			cout << "è¯·è¾“å…¥ Recovery é•œåƒæ–‡ä»¶è·¯å¾„ï¼š";
+			cin >> filepath1;
+			cout << "ç¡®ä¿æ‚¨çš„ Ubuntu Touch è®¾å¤‡å·²è¿›å…¥åˆ·æœºæ¨¡å¼ï¼ˆFastbootï¼‰ï¼\n";
+			char str[500] = "fastboot flash recovery ";
+			system(strcat(str, filepath1));
+		}
+		else if (choice == 15) {
+			system("adb shell");
+			cout << endl;
+		}
+		else if (choice == 16) {
+			system("adb reconnect");
+			system("adb devices");
+		}
+		else if (choice == 17) {
+			system("adb get-serialno");
+		}
+	}	//åŠŸèƒ½åˆ—è¡¨å¾ªçŽ¯
 }
