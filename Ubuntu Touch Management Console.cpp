@@ -74,7 +74,7 @@ int main() {
 		cout << "功能列表：\n1. 查看设备的存储容量状态\n";
 		cout << "2. 复制本地文件到设备指定目录\n3. 复制设备文件到本地指定目录\n4. 安装 Android 包到设备（须已部署 Anbox）\n5. 卸载 Android 应用程序\n";
 		cout << "6. 导出设备相册\n7. 重载存储系统可读写\n8. 重启设备至刷机模式\n9. 强制关机\n10. 强制重新启动\n";
-		cout << "11. 重新启动并还原出厂设置\n12. 从刷机模式重启至 Ubuntu Touch\n13. 从刷机模式重启至 Recovery\n14. 从刷机模式刷入非官方 Recovery\n15. 访问设备终端\n16. 重新连接设备\n17. 读取设备的序列号" << endl << "--> ";
+		cout << "11. 重新启动并还原出厂设置\n12. 从刷机模式重启至 Ubuntu Touch\n13. 从刷机模式重启至 Recovery\n14. 从刷机模式刷入非官方 Recovery\n15. 访问设备终端\n16. 重新连接设备\n17. 获取设备序列号" << endl << "--> ";
 		cin >> choice;
 		cout << endl;
 		if (choice == 1) {
@@ -163,7 +163,8 @@ int main() {
 			system("adb reboot bootloader");
 		}
 		else if (choice == 9) {
-			system("adb shell reboot -p");
+			cout << "输入管理员（超级用户权限）密码以完成操作\n";
+			system("adb shell sudo poweroff");
 		}
 		else if (choice == 10) {
 			system("adb reboot");
@@ -198,7 +199,9 @@ int main() {
 			system("adb devices");
 		}
 		else if (choice == 17) {
+			cout << "您的设备序列号为：";
 			system("adb get-serialno");
+			cout << endl;
 		}
 	}	//功能列表循环
 }
