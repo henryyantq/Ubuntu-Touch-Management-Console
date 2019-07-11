@@ -188,6 +188,7 @@ int main() {
 			cout << "确保您的 Ubuntu Touch 设备已进入刷机模式（Fastboot）！\n";
 			char str[500] = "fastboot flash recovery ";
 			system(strcat(str, filepath1));
+			cout << endl;
 		}
 		else if (choice == 15) {
 			system("adb shell");
