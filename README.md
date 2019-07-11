@@ -5,6 +5,7 @@
 - 导出相册
 - 终端操作
 - Anbox(Android-in-a-box)相关操作
+- 刷机模式（Bootloader）相关操作
 - 日后会加入更多功能
 - 目前可能存在一些 bug，请各位谅解
 
