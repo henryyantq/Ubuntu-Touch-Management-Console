@@ -182,7 +182,7 @@ int main() {
 		else if (choice == 14) {
 			cout << "请输入 Recovery 镜像文件路径：";
 			cin >> filepath1;
-			cout << "确保您的 Ubuntu Touch 设备已进入刷机模式（Fastboot）！\n"
+			cout << "确保您的 Ubuntu Touch 设备已进入刷机模式（Fastboot）！\n";
 			char str[500] = "fastboot flash recovery ";
 			system(strcat(str,filepath1));
 		}
