@@ -19,3 +19,5 @@ yantq0927@gmail.com
 Henry0927@outlook.com
 
 Find me on https://forums.ubports.com/ (UBports Forum): @Evergardener
+
+English Version & "源程序（第二版）" are both the latest update of code.
