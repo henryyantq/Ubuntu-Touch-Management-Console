@@ -52,10 +52,12 @@ int main() {
 	lapse(1);
 	cout << endl << "Made by Henry Yan (@Evergardener)" << endl << endl;
 	lapse(1);
-	cout << "Have you already deployed ADB on your computer?\n1. Yes.\n2. No. Download and install for me. (Mac OS X only!)\n--> ";
+	cout << "Have you already deployed ADB on your computer?\n1. Yes.\n2. No.\n--> ";
 	cin >> choice;
-	if (choice == 2)
-		system("brew cask install android-platform-tools");
+	if (choice == 2) {
+		cout << "Sorry, please deploy ADB (Android Debug Bridge) on your computer first.\n";
+		exit(0);
+	}
 	cout << endl << "Initializing ADB tunnel...\n\n";
 	system("adb kill-server");
 	system("adb start-server");
@@ -80,7 +82,7 @@ int main() {
 		if (choice == 1) {
 			adb_shell("df -H");
 			cout << endl;
-		}	//Ñ¡Ïî1
+		}	//é€‰é¡¹1
 		else if (choice == 2) {
 			cout << "Path of local file (drag to here): ";
 			cin >> filepath1;
@@ -99,7 +101,7 @@ int main() {
 			else if (choice == 6)
 				file_push(filepath1, "/home/phablet/Videos");
 			cout << endl;
-		}	//Ñ¡Ïî2
+		}	//é€‰é¡¹2
 		else if (choice == 3) {
 			cout << "Path of file to be copied from your device: ";
 			cin >> filepath2;
@@ -107,7 +109,7 @@ int main() {
 			cin >> filepath1;
 			file_pull(filepath2, filepath1);
 			cout << endl;
-		}	//Ñ¡Ïî3
+		}	//é€‰é¡¹3
 		else if (choice == 4) {
 			char save_path[300] = "/home/phablet/Downloads";
 			char *apk_name;
@@ -126,19 +128,19 @@ int main() {
 						}
 					}
 					break;
-				}	//ÕÒµ½ .apk ×ÖÑù
-			}	//µÃµ½ apk ÎÄ¼þÃû
+				}	//æ‰¾åˆ° .apk å­—æ ·
+			}	//å¾—åˆ° apk æ–‡ä»¶å
 			apk_name = new char[count];
 			apk_name[count - 1] = '\0';
 			for (int i = flag + 1, k = 0, calc = 0; calc < count; calc++, i++, k++) {
 				apk_name[k] = filepath1[i];
-			}	//µÃµ½ apk ÎÄ¼þÃû
+			}	//å¾—åˆ° apk æ–‡ä»¶å
 			cout << "APK filename: " << apk_name << endl;
 			strcat(save_path, "/");
 			strcat(save_path, apk_name);
 			apk_inst(save_path);
 			cout << endl;
-		}	//Ñ¡Ïî4
+		}	//é€‰é¡¹4
 		else if (choice == 5) {
 			char package[200];
 			char uninst[500] = "adb uninstall ";
@@ -148,7 +150,7 @@ int main() {
 			cin >> package;
 			adb_shell(strcat(uninst, package));
 			cout << endl;
-		}	//Ñ¡Ïî5
+		}	//é€‰é¡¹5
 		else if (choice == 6) {
 			cout << "Path of target local directory (drag to here): ";
 			cin >> filepath1;
@@ -184,7 +186,7 @@ int main() {
 			cout << endl;
 		}
 		else if (choice == 14) {
-			cout << "Path of the local recovery file (.img) (drag to here)£º";
+			cout << "Path of the local recovery file (.img) (drag to here)ï¼š";
 			cin >> filepath1;
 			cout << "Make sure your Ubuntu Touch device is in bootloader (Fastboot mode)!\n";
 			char str[500] = "fastboot flash recovery ";
@@ -203,5 +205,5 @@ int main() {
 			system("adb get-serialno");
 			cout << endl;
 		}
-	}	//¹¦ÄÜÁÐ±íÑ­»·
+	}	//åŠŸèƒ½åˆ—è¡¨å¾ªçŽ¯
 }
