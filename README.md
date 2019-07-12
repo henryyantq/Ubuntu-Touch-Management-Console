@@ -11,8 +11,7 @@ Connect your Ubuntu Touch device to your computer and manage it with UT Manageme
 
 Note: Whether Anbox related operations can be done depends on whether the Android emulator on your Ubuntu Touch device is working properly. If the operations fail, in most cases you might need to check if the Anbox on your UT device really works properly or not.
 
-If you're using Mac OS X, deploy Homebrew on your Mac first before you can deploy ADB environment through UT Management Console!
-If you are using Windows, please deploy ADB manually!
+This programme is only for Windows!
 
 My emails:
 yantq0927@gmail.com
