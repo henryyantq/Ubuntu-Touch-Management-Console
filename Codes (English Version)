@@ -52,10 +52,12 @@ int main() {
 	lapse(1);
 	cout << endl << "Made by Henry Yan (@Evergardener)" << endl << endl;
 	lapse(1);
-	cout << "Have you already deployed ADB on your computer?\n1. Yes.\n2. No. Download and install for me. (Mac OS X only!)\n--> ";
+	cout << "Have you already deployed ADB on your computer?\n1. Yes.\n2. No.\n--> ";
 	cin >> choice;
-	if (choice == 2)
-		system("brew cask install android-platform-tools");
+	if (choice == 2) {
+		cout << "Sorry, please deploy ADB (Android Debug Bridge) on your computer first.\n";
+		exit(0);
+	}
 	cout << endl << "Initializing ADB tunnel...\n\n";
 	system("adb kill-server");
 	system("adb start-server");
