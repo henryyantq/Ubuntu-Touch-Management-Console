@@ -52,10 +52,12 @@ int main() {
 	lapse(1);
 	cout << endl << "由 Henry Yan (@Evergardener) 制作" << endl << endl;
 	lapse(1);
-	cout << "您的设备是否安装了 adb 文件？\n1、是的\n2、否，请为我安装（仅限 Mac OS X）\n--> ";
+	cout << "您的设备是否安装了 ADB 调试环境？\n1、是的\n2、否\n--> ";
 	cin >> choice;
-	if (choice == 2)
-		system("brew cask install android-platform-tools");
+	if (choice == 2) {
+		cout << "对不起，请您部署完成 ADB 调试环境后再运行本程序。";
+		exit(0);
+	}
 	cout << endl << "正在初始化 ADB 服务端...\n\n";
 	system("adb kill-server");
 	system("adb start-server");
