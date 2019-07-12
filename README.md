@@ -11,7 +11,7 @@ Connect your Ubuntu Touch device to your computer and manage it with UT Manageme
 
 Note: Whether Anbox related operations can be done depends on whether the Android emulator on your Ubuntu Touch device is working properly. If the operations fail, in most cases you might need to check if the Anbox on your UT device really works properly or not.
 
-This programme is only for Windows!
+This programme is only for Windows! I'll add support for Mac soon!
 
 My emails:
 yantq0927@gmail.com
