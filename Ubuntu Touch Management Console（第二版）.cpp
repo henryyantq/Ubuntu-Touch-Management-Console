@@ -21,6 +21,7 @@ void file_push(char *start, char *end) {
 	strcat(push, start);
 	strcat(push, " ");
 	system(strcat(push, end));
+	cout << push << endl;
 }
 
 void file_pull(char *start, char *end) {
@@ -65,6 +66,7 @@ int main() {
 		system("adb devices");
 		cout << "您的 Ubuntu Touch 设备是否被识别正确？\n1、是的\n2、再试一次\n3、我的设备处于刷机模式\n--> ";
 		cin >> choice;
+		cin.get();
 		if (choice == 1 || choice == 3) break;
 		else cout << endl;
 	}
@@ -75,6 +77,7 @@ int main() {
 	else if (choice == 3) {
 		cout << endl << "是否从刷机模式重启至 Ubuntu Touch?\n1、好的\n2、出了些问题，直接进入功能列表\n--> ";
 		cin >> choice;
+		cin.get();
 		if (choice == 1) {
 			cout << endl;
 			system("fastboot reboot");
@@ -84,11 +87,14 @@ int main() {
 	while (1) {
 		char filepath1[200];
 		char filepath2[200];
+		strcpy(filepath1, "");
+		strcpy(filepath2, "");
 		cout << "功能列表：\n1. 查看设备的存储容量状态\n";
 		cout << "2. 复制本地文件到设备指定目录\n3. 复制设备文件到本地指定目录\n4. 安装 Android 包到设备（须已部署 Anbox）\n5. 卸载 Android 应用程序\n";
 		cout << "6. 导出设备相册\n7. 重载存储系统可读写\n8. 重启设备至刷机模式\n9. 强制关机\n10. 强制重新启动\n";
 		cout << "11. 重新启动并还原出厂设置\n12. 从刷机模式重启至 Ubuntu Touch\n13. 从刷机模式重启至 Recovery\n14. 从刷机模式刷入非官方 Recovery\n15. 访问设备终端\n16. 重新连接设备\n17. 获取设备序列号" << endl << "--> ";
 		cin >> choice;
+		cin.get();
 		cout << endl;
 		if (choice == 1) {
 			adb_shell("df -H");
@@ -96,9 +102,11 @@ int main() {
 		}	//选项1
 		else if (choice == 2) {
 			cout << "本地文件路径：";
-			cin >> filepath1;
+			cin.getline(filepath1, 200);
 			cout << "设备目标目录路径选择：\n1. 主目录\n2. Documents\n3. Downloads\n4. Music\n5. Pictures\n6. Videos\n--> ";
 			cin >> choice;
+			cin.get();
+			cout << endl;
 			if (choice == 1)
 				file_push(filepath1, "/home/phablet");
 			else if (choice == 2)
@@ -115,9 +123,9 @@ int main() {
 		}	//选项2
 		else if (choice == 3) {
 			cout << "设备文件路径：";
-			cin >> filepath2;
+			cin.getline(filepath2, 200);
 			cout << "本地目标目录路径：";
-			cin >> filepath1;
+			cin.getline(filepath1, 200);
 			file_pull(filepath2, filepath1);
 			cout << endl;
 		}	//选项3
@@ -127,7 +135,7 @@ int main() {
 			int count = 0;
 			int flag;
 			cout << "本地安卓文件路径：";
-			cin >> filepath1;
+			cin.getline(filepath1, 200);
 			file_push(filepath1, save_path);
 			for (int i = 0; i < 500; i++) {
 				if (filepath1[i] == '.' && filepath1[i + 1] == 'a' && filepath1[i + 2] == 'p' && filepath1[i + 3] == 'k') {
@@ -158,13 +166,13 @@ int main() {
 			cout << "APK 包列表如下：" << endl;
 			adb_shell("adb shell pm list packages");
 			cout << endl << "请输入对应包名以卸载 Android 应用程序：";
-			cin >> package;
+			cin.getline(package, 200);
 			adb_shell(strcat(uninst, package));
 			cout << endl;
 		}	//选项5
 		else if (choice == 6) {
 			cout << "请输入本地目标目录路径：";
-			cin >> filepath1;
+			cin.getline(filepath1, 200);
 			file_pull("/home/phablet/Pictures", filepath1);
 			cout << endl;
 		}
@@ -198,7 +206,7 @@ int main() {
 		}
 		else if (choice == 14) {
 			cout << "请输入 Recovery 镜像文件路径：";
-			cin >> filepath1;
+			cin.getline(filepath1, 200);
 			cout << "确保您的 Ubuntu Touch 设备已进入刷机模式（Fastboot）！\n";
 			char str[500] = "fastboot flash recovery ";
 			system(strcat(str, filepath1));
