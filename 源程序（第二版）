@@ -63,12 +63,23 @@ int main() {
 	system("adb start-server");
 	while (1) {
 		system("adb devices");
-		cout << "您的 Ubuntu Touch 设备是否被识别正确？\n1、是的\n2、再试一次\n--> ";
+		cout << "您的 Ubuntu Touch 设备是否被识别正确？\n1、是的\n2、再试一次\n3、我的设备处于刷机模式\n--> ";
 		cin >> choice;
-		if (choice == 1) break;
+		if (choice == 1 || choice == 3) break;
 		else cout << endl;
 	}
-	lapse(1);
+	if (choice == 1) {
+		lapse(1);
+		cout << endl;
+	}
+	else if (choice == 3) {
+		cout << endl << "是否从刷机模式重启至 Ubuntu Touch?\n1、好的\n2、出了些问题，直接进入功能列表\n--> ";
+		cin >> choice;
+		if (choice == 1) {
+			cout << endl;
+			system("fastboot reboot");
+		}
+	}
 	cout << endl;
 	while (1) {
 		char filepath1[200];
