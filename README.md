@@ -20,3 +20,6 @@ Henry0927@outlook.com
 Find me on https://forums.ubports.com/ (UBports Forum): @Evergardener
 
 English Version & "源程序（第二版）" are both the latest update of code.
+
+通常，中文版更新进度较超前。请华人 UT 机友们尽量复制中文版的源码！
+Sometimes, the update progress of Chinese version is more ahead of schedule. Sorry for the inconvenience!
