@@ -147,7 +147,7 @@ int main() {
 			else if (choice == 3)
 				file_push(filepath1, "/home/phablet/Downloads");
 			else if (choice == 4)
-				file_push(filepath1, "home/phablet/Music");
+				file_push(filepath1, "/home/phablet/Music");
 			else if (choice == 5)
 				file_push(filepath1, "/home/phablet/Pictures");
 			else if (choice == 6)
