@@ -21,7 +21,6 @@ void file_push(char *start, char *end) {
 	strcat(push, start);
 	strcat(push, " ");
 	system(strcat(push, end));
-	cout << push << endl;
 }
 
 void file_pull(char *start, char *end) {
@@ -30,6 +29,39 @@ void file_pull(char *start, char *end) {
 	strcat(pull, " ");
 	system(strcat(pull, end));
 }
+
+void create_lib(char *id, char *name) {
+	cout << "正在创建 Libertine 容器 " << name << " 。需要一段时间，请勿关闭程序..." << endl;
+	char create[200] = "libertine-container-manager create -i ";
+	strcat(create, id);
+	strcat(create, " -n ");
+	strcat(create, "'");
+	strcat(create, name);
+	adb_shell(strcat(create, "'"));
+}
+
+void libertine(char *id, char *cmd) {
+	char lib[200] = "libertine-container-manager ";
+	strcat(lib, cmd);
+	strcat(lib, " -i ");
+	adb_shell(strcat(lib,id));
+}
+
+void inst_pkg(char *id, char *pkg_name) {
+	cout << "正在安装桌面应用程序包 " << pkg_name << " 。需要一段时间，请勿关闭程序..." << endl;
+	char lib[200] = "libertine-container-manager install-package -i ";
+	strcat(lib, id);
+	strcat(lib, " -p ");
+	adb_shell(strcat(lib, pkg_name));
+}	//Libertine 操作
+
+void uninst_pkg(char *id, char *pkg_name) {
+	cout << "正在移除桌面应用程序包 " << pkg_name << " 。需要一段时间，请勿关闭程序..." << endl;
+	char lib[200] = "libertine-container-manager remove-package -i ";
+	strcat(lib, id);
+	strcat(lib, " -p ");
+	adb_shell(strcat(lib, pkg_name));
+}	//Libertine 操作
 
 void lapse(double dur) {
 	time_t start, end;
@@ -90,9 +122,9 @@ int main() {
 		strcpy(filepath1, "");
 		strcpy(filepath2, "");
 		cout << "功能列表：\n1. 查看设备的存储容量状态\n";
-		cout << "2. 复制本地文件到设备指定目录\n3. 复制设备文件到本地指定目录\n4. 安装 Android 包到设备（须已部署 Anbox）\n5. 卸载 Android 应用程序\n";
-		cout << "6. 导出设备相册\n7. 重载存储系统可读写\n8. 重启设备至刷机模式\n9. 强制关机\n10. 强制重新启动\n";
-		cout << "11. 重新启动并还原出厂设置\n12. 从刷机模式重启至 Ubuntu Touch\n13. 从刷机模式重启至 Recovery\n14. 从刷机模式刷入非官方 Recovery\n15. 访问设备终端\n16. 重新连接设备\n17. 获取设备序列号" << endl << "--> ";
+		cout << "2. 复制本地文件到设备指定目录\n3. 复制设备文件到本地指定目录\n4. 安装 Android 包到设备（须已部署 Anbox）\n5. 卸载 Android 应用程序\n6. Libertine 桌面应用程序容器\n";
+		cout << "7. 导出设备相册\n8. 重载存储系统可读写\n9. 重启设备至刷机模式\n10. 强制关机\n11. 强制重新启动\n";
+		cout << "12. 重新启动并还原出厂设置\n13. 从刷机模式重启至 Ubuntu Touch\n14. 从刷机模式重启至 Recovery\n15. 从刷机模式刷入非官方 Recovery\n16. 访问设备终端\n17. 重新连接设备\n18. 获取设备序列号" << endl << "--> ";
 		cin >> choice;
 		cin.get();
 		cout << endl;
@@ -103,6 +135,7 @@ int main() {
 		else if (choice == 2) {
 			cout << "本地文件路径：";
 			cin.getline(filepath1, 200);
+			cout << endl;
 			cout << "设备目标目录路径选择：\n1. 主目录\n2. Documents\n3. Downloads\n4. Music\n5. Pictures\n6. Videos\n--> ";
 			cin >> choice;
 			cin.get();
@@ -171,55 +204,121 @@ int main() {
 			cout << endl;
 		}	//选项5
 		else if (choice == 6) {
+			char lib_id[50];
+			char lib_name[50];
+			cout << "Libertain 容器管理\n\n";
+			lapse(1);
+			cout << "1. 部署一个全新的 Libertine\n2. 管理现有的 Libertine 容器\n3. 离开 Libertine 容器管理\n--> ";
+			cin >> choice;
+			cin.get();
+			cout << endl;
+			if (choice == 1) {
+				cout << "需要进行一些设置。\n可能需要您输入管理员（超级用户权限）密码!\n";
+				adb_shell("sudo apt-get install python3-libertine-chroot");
+				cout << "设置完毕。\n\n为您即将部署的 Libertine 容器设置一个 ID（仅可包含小写字母）：";
+				cin.getline(lib_id, 50);
+				cout << "现在请您为容器设置一个名称（不能包含汉字或特殊符号）：";
+				cin.getline(lib_name, 50);
+				create_lib(lib_id, lib_name);
+				cout << "创建完成！\n创建成功以下 Libertine 容器：" << endl;
+				adb_shell("libertine-container-manager list");
+				cout << endl;
+				goto choice_2;
+			}
+			else if (choice == 2) {
+			choice_2:
+				while (1) {
+					char  id[50];
+					strcpy(id, "");
+					cout << "Libertine 操作一览：" << endl;
+					cout << "1. 查看已部署的 Libertine 容器 ID\n2. 查看已安装的 X11 桌面应用程序\n3. 安装一个 X11 桌面应用程序\n4. 移除一个 X11 桌面应用程序\n5. 离开 Libertine 容器管理\n--> ";
+					cin >> choice;
+					cin.get();
+					cout << endl;
+					if (choice == 5) break;
+					else if (choice == 1) {
+						cout << "目前的容器包括：" << endl;
+						adb_shell("libertine-container-manager list");
+					}	//Libertine 操作 - 1
+					else if (choice == 2) {
+						cout << "请输入您需要查看的容器 ID：";
+						cin.getline(id, 50);
+						cout << "该容器包含以下包：";
+						libertine(id, "list-apps");
+					}	//Libertine 操作 - 2
+					else if (choice == 3) {
+						char pack_name[100];
+						cout << "请输入您需要查看的容器 ID：";
+						cin.getline(id, 50);
+						cout << "请输入您希望安装的桌面应用程序包名：";
+						cin.getline(pack_name, 100);
+						inst_pkg(id, pack_name);
+						cout << "安装完毕。" << endl;
+					}	//Libertine 操作 - 3
+					else if (choice == 4) {
+						char pack_name[100];
+						cout << "请输入您需要查看的容器 ID：";
+						cin.getline(id, 50);
+						cout << "请输入您希望移除的桌面应用程序包名：";
+						cin.getline(pack_name, 100);
+						uninst_pkg(id, pack_name);
+						cout << "移除完毕。" << endl;
+					}	//Libertine 操作 - 4
+					cout << endl;
+				}	//Libertine 操作
+			}
+			cout << endl;
+		}	//选项6
+		else if (choice == 7) {
 			cout << "请输入本地目标目录路径：";
 			cin.getline(filepath1, 200);
 			file_pull("/home/phablet/Pictures", filepath1);
 			cout << endl;
 		}
-		else if (choice == 7) {
+		else if (choice == 8) {
 			cout << "输入管理员（超级用户权限）密码以完成操作\n";
 			adb_shell("sudo mount -o remount,rw /");
 		}
-		else if (choice == 8) {
+		else if (choice == 9) {
 			system("adb reboot bootloader");
 		}
-		else if (choice == 9) {
+		else if (choice == 10) {
 			cout << "输入管理员（超级用户权限）密码以完成操作\n";
 			system("adb shell sudo poweroff");
 		}
-		else if (choice == 10) {
+		else if (choice == 11) {
 			system("adb reboot");
 		}
-		else if (choice == 11) {
+		else if (choice == 12) {
 			system("adb reboot bootloader");
 			system("fastboot format cache");
 			system("fastboot format userdata");
 			system("fastboot reboot");
 		}
-		else if (choice == 12) {
+		else if (choice == 13) {
 			system("fastboot reboot");
 			cout << endl;
 		}
-		else if (choice == 13) {
+		else if (choice == 14) {
 			system("fastboot reboot recovery");
 			cout << endl;
 		}
-		else if (choice == 14) {
+		else if (choice == 15) {
 			cout << "请输入 Recovery 镜像文件路径：";
 			cin.getline(filepath1, 200);
 			cout << "确保您的 Ubuntu Touch 设备已进入刷机模式（Fastboot）！\n";
 			char str[500] = "fastboot flash recovery ";
 			system(strcat(str, filepath1));
 		}
-		else if (choice == 15) {
+		else if (choice == 16) {
 			system("adb shell");
 			cout << endl;
 		}
-		else if (choice == 16) {
+		else if (choice == 17) {
 			system("adb reconnect");
 			system("adb devices");
 		}
-		else if (choice == 17) {
+		else if (choice == 18) {
 			system("adb get-serialno");
 			cout << endl;
 		}
