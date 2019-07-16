@@ -206,7 +206,7 @@ int main() {
 		else if (choice == 6) {
 			char lib_id[50];
 			char lib_name[50];
-			cout << "Libertain 容器管理\n\n";
+			cout << "Libertine 容器管理\n\n";
 			lapse(1);
 			cout << "1. 部署一个全新的 Libertine\n2. 管理现有的 Libertine 容器\n3. 离开 Libertine 容器管理\n--> ";
 			cin >> choice;
