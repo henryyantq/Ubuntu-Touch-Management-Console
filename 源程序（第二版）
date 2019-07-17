@@ -204,6 +204,7 @@ int main() {
 			cout << endl;
 		}	//选项5
 		else if (choice == 6) {
+			adb_shell("sudo omunt -o rw,remount /");
 			char lib_id[50];
 			char lib_name[50];
 			cout << "Libertine 容器管理\n\n";
@@ -277,7 +278,7 @@ int main() {
 		}
 		else if (choice == 8) {
 			cout << "输入管理员（超级用户权限）密码以完成操作\n";
-			adb_shell("sudo mount -o remount,rw /");
+			adb_shell("sudo omunt -o rw,remount /");
 		}
 		else if (choice == 9) {
 			system("adb reboot bootloader");
