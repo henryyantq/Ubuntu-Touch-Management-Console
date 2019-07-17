@@ -5,7 +5,7 @@ Connect your Ubuntu Touch device to your computer and manage it with UT Manageme
 - Export photo album
 - Terminal operations
 - Anbox (Android-in-a-box) related operations
-- Libertine Container Management (Currently available only for Chinese version)
+- Libertine Container Management
 - Bootloader (Fastboot mode) related operations
 - More features will be added in the future
 - There may be some bugs at present, please understand
