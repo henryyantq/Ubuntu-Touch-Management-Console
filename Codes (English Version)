@@ -30,6 +30,39 @@ void file_pull(char *start, char *end) {
 	system(strcat(pull, end));
 }
 
+void create_lib(char *id, char *name) {
+	cout << "Creating Libertine Desktop " << name << ". Keep the programme running, please..." << endl;
+	char create[200] = "libertine-container-manager create -i ";
+	strcat(create, id);
+	strcat(create, " -n ");
+	strcat(create, "'");
+	strcat(create, name);
+	adb_shell(strcat(create, "'"));
+}
+
+void libertine(char *id, char *cmd) {
+	char lib[200] = "libertine-container-manager ";
+	strcat(lib, cmd);
+	strcat(lib, " -i ");
+	adb_shell(strcat(lib,id));
+}
+
+void inst_pkg(char *id, char *pkg_name) {
+	cout << "Downloading and installing desktop dpkg " << pkg_name << ". Keep the programme running, please..." << endl;
+	char lib[200] = "libertine-container-manager install-package -i ";
+	strcat(lib, id);
+	strcat(lib, " -p ");
+	adb_shell(strcat(lib, pkg_name));
+}	//Libertine 操作
+
+void uninst_pkg(char *id, char *pkg_name) {
+	cout << "Removing desktop dpkg " << pkg_name << ". Keep the programme running, please..." << endl;
+	char lib[200] = "libertine-container-manager remove-package -i ";
+	strcat(lib, id);
+	strcat(lib, " -p ");
+	adb_shell(strcat(lib, pkg_name));
+}	//Libertine 操作
+
 void lapse(double dur) {
 	time_t start, end;
 	start = clock();
@@ -63,21 +96,37 @@ int main() {
 	system("adb start-server");
 	while (1) {
 		system("adb devices");
-		cout << "Is your Ubuntu Touch device correctly identified?\n1. Yes.\n2. Try again.\n--> ";
+		cout << "Is your Ubuntu Touch device correctly identified?\n1. Yes.\n2. Try again.\n3. My device is in bootloader (Fastboot mode)\n--> ";
 		cin >> choice;
-		if (choice == 1) break;
+		cin.get();
+		if (choice == 1 || choice == 3) break;
 		else cout << endl;
 	}
-	lapse(1);
+	if (choice == 1) {
+		lapse(1);
+		cout << endl;
+	}
+	else if (choice == 3) {
+		cout << endl << "Reboot to Ubuntu Touch?\n1. Sure\n2. Directly enter the Menu\n--> ";
+		cin >> choice;
+		cin.get();
+		if (choice == 1) {
+			cout << endl;
+			system("fastboot reboot");
+		}
+	}
 	cout << endl;
 	while (1) {
 		char filepath1[200];
 		char filepath2[200];
+		strcpy(filepath1, "");
+		strcpy(filepath2, "");
 		cout << "Menu:\n1. Read storage status of your UT device\n";
-		cout << "2. Copy file(s) to your device\n3. Copy file(s) from...\n4. Install APK(s) (Anbox required)\n5. Uninstall APK(s)\n";
-		cout << "6. Export photo albums\n7. Remount main storage as read-and-write\n8. Reboot to bootloader (Fastboot mode)\n9. Shutdown (Forced)\n10. Reboot (Forced)\n";
-		cout << "11. Reboot and factory reset\n12. Reboot to Ubuntu Touch from bootloader (Fastboot mode)\n13. Reboot to recovery from bootloader (Fastboot mode)\n14. Flash third-party recovery in bootloader (Fastboot mode)\n15. Ubuntu Touch terminal\n16. Reconnect your device\n17. Serial no. of your device" << endl << "--> ";
+		cout << "2. Copy file(s) to your device\n3. Copy file(s) from...\n4. Install APK(s) (Anbox required)\n5. Uninstall APK(s)\n6. Libertine container management\n";
+		cout << "7. Export photo albums\n8. Remount main storage as read-and-write\n9. Reboot to bootloader (Fastboot mode)\n10. Shutdown (Forced)\n11. Reboot (Forced)\n";
+		cout << "12. Reboot and factory reset\n13. Reboot to Ubuntu Touch from bootloader (Fastboot mode)\n14. Reboot to recovery from bootloader (Fastboot mode)\n15. Flash third-party recovery in bootloader (Fastboot mode)\n16. Ubuntu Touch terminal\n17. Reconnect your device\n18. Serial no. of your device" << endl << "--> ";
 		cin >> choice;
+		cin.get();
 		cout << endl;
 		if (choice == 1) {
 			adb_shell("df -H");
@@ -85,9 +134,12 @@ int main() {
 		}	//选项1
 		else if (choice == 2) {
 			cout << "Path of local file (drag to here): ";
-			cin >> filepath1;
+			cin.getline(filepath1, 200);
+			cout << endl;
 			cout << "Path of device's target directory\n1. Main directory\n2. Documents\n3. Downloads\n4. Music\n5. Pictures\n6. Videos\n--> ";
 			cin >> choice;
+			cin.get();
+			cout << endl;
 			if (choice == 1)
 				file_push(filepath1, "/home/phablet");
 			else if (choice == 2)
@@ -104,9 +156,9 @@ int main() {
 		}	//选项2
 		else if (choice == 3) {
 			cout << "Path of file to be copied from your device: ";
-			cin >> filepath2;
+			cin.getline(filepath2, 200);
 			cout << "Path of target local directory (drag to here): ";
-			cin >> filepath1;
+			cin.getline(filepath1, 200);
 			file_pull(filepath2, filepath1);
 			cout << endl;
 		}	//选项3
@@ -116,7 +168,7 @@ int main() {
 			int count = 0;
 			int flag;
 			cout << "Path of the local APK to be installed on your device: ";
-			cin >> filepath1;
+			cin.getline(filepath1, 200);
 			file_push(filepath1, save_path);
 			for (int i = 0; i < 500; i++) {
 				if (filepath1[i] == '.' && filepath1[i + 1] == 'a' && filepath1[i + 2] == 'p' && filepath1[i + 3] == 'k') {
@@ -147,61 +199,126 @@ int main() {
 			cout << "List of APKs installed:" << endl;
 			adb_shell("adb shell pm list packages");
 			cout << endl << "The package name of the app to be removed: ";
-			cin >> package;
+			cin.getline(package, 200);
 			adb_shell(strcat(uninst, package));
 			cout << endl;
 		}	//选项5
 		else if (choice == 6) {
+			char lib_id[50];
+			char lib_name[50];
+			cout << "Libertine container management\n\n";
+			lapse(1);
+			cout << "1. Create a new Libertine container\n2. Manage existing Libertine container(s)\n3. Leave Libertine container management\n--> ";
+			cin >> choice;
+			cin.get();
+			cout << endl;
+			if (choice == 1) {
+				cout << "Some settings are being deployed.\nYour lockscreen (admin) password might be required!\n";
+				adb_shell("sudo apt-get install python3-libertine-chroot");
+				cout << "Operation complete.\n\nCreate and ID for this container (Lower case letters only): ";
+				cin.getline(lib_id, 50);
+				cout << "Now name your container (No special symbol): ";
+				cin.getline(lib_name, 50);
+				create_lib(lib_id, lib_name);
+				cout << "Load complete!\nThe following Libertine container is created:" << endl;
+				adb_shell("libertine-container-manager list");
+				cout << endl;
+				goto choice_2;
+			}
+			else if (choice == 2) {
+			choice_2:
+				while (1) {
+					char  id[50];
+					strcpy(id, "");
+					cout << "Libertine operations:" << endl;
+					cout << "1. List existing ID(s) of Libertine container(s)\n2. List installed X11 desktop dpkg(s)\n3. Download and install an X11 desktop dpkg\n4. Remove an X11 desktop dpkg\n5. Leave Libertine container management\n--> ";
+					cin >> choice;
+					cin.get();
+					cout << endl;
+					if (choice == 5) break;
+					else if (choice == 1) {
+						cout << "Existing Libertine container(s) including:" << endl;
+						adb_shell("libertine-container-manager list");
+					}	//Libertine 操作 - 1
+					else if (choice == 2) {
+						cout << "Enter the ID of the container you want to look up: ";
+						cin.getline(id, 50);
+						cout << "Enter the ID of the container you want to look up: ";
+						libertine(id, "list-apps");
+					}	//Libertine 操作 - 2
+					else if (choice == 3) {
+						char pack_name[100];
+						cout << "Enter the ID of the container you want to look up: ";
+						cin.getline(id, 50);
+						cout << "The name of the desktop dpkg you want to install: ";
+						cin.getline(pack_name, 100);
+						inst_pkg(id, pack_name);
+						cout << "Installation complete!" << endl;
+					}	//Libertine 操作 - 3
+					else if (choice == 4) {
+						char pack_name[100];
+						cout << "Enter the ID of the container you want to look up: ";
+						cin.getline(id, 50);
+						cout << "The name of the desktop dpkg you want to remove: ";
+						cin.getline(pack_name, 100);
+						uninst_pkg(id, pack_name);
+						cout << "Remove complete!" << endl;
+					}	//Libertine 操作 - 4
+					cout << endl;
+				}	//Libertine 操作
+			}
+			cout << endl;
+		}	//选项6
+		else if (choice == 7) {
 			cout << "Path of target local directory (drag to here): ";
-			cin >> filepath1;
+			cin.getline(filepath1, 200);
 			file_pull("/home/phablet/Pictures", filepath1);
 			cout << endl;
 		}
-		else if (choice == 7) {
+		else if (choice == 8) {
 			cout << "Please input lockscreen (admin) password below.\n";
 			adb_shell("sudo mount -o remount,rw /");
 		}
-		else if (choice == 8) {
+		else if (choice == 9) {
 			system("adb reboot bootloader");
 		}
-		else if (choice == 9) {
+		else if (choice == 10) {
 			cout << "Please input lockscreen (admin) password below.\n";
 			system("adb shell sudo poweroff");
 		}
-		else if (choice == 10) {
+		else if (choice == 11) {
 			system("adb reboot");
 		}
-		else if (choice == 11) {
+		else if (choice == 12) {
 			system("adb reboot bootloader");
 			system("fastboot format cache");
 			system("fastboot format userdata");
 			system("fastboot reboot");
 		}
-		else if (choice == 12) {
+		else if (choice == 13) {
 			system("fastboot reboot");
 			cout << endl;
 		}
-		else if (choice == 13) {
+		else if (choice == 14) {
 			system("fastboot reboot recovery");
 			cout << endl;
 		}
-		else if (choice == 14) {
-			cout << "Path of the local recovery file (.img) (drag to here)：";
-			cin >> filepath1;
+		else if (choice == 15) {
+			cout << "Path of the local recovery file (.img) (drag to here): ";
+			cin.getline(filepath1, 200);
 			cout << "Make sure your Ubuntu Touch device is in bootloader (Fastboot mode)!\n";
 			char str[500] = "fastboot flash recovery ";
 			system(strcat(str, filepath1));
 		}
-		else if (choice == 15) {
+		else if (choice == 16) {
 			system("adb shell");
 			cout << endl;
 		}
-		else if (choice == 16) {
+		else if (choice == 17) {
 			system("adb reconnect");
 			system("adb devices");
 		}
-		else if (choice == 17) {
-			cout << "The serial no. of your device is ";
+		else if (choice == 18) {
 			system("adb get-serialno");
 			cout << endl;
 		}
