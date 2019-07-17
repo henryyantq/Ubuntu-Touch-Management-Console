@@ -14,13 +14,13 @@ Note: Whether Anbox related operations can be done depends on whether the Androi
 
 This programme is only for Windows! I'll rewrite the terminal pipe operation to add support for Mac soon!
 
-My emails:
-yantq0927@gmail.com
-Henry0927@outlook.com
+My emails:\n
+yantq0927@gmail.com\n
+henry0927@outlook.com
 
 Find me on https://forums.ubports.com/ (UBports Forum): @Evergardener
 
 English Version & "源程序（第二版）" are both the latest update of code.
 
-通常，中文版更新进度较超前。请华人 UT 机友们尽量复制中文版的源码！
+通常，中文版更新进度较超前。请华人 UT 机友们尽量复制中文版的源码！\n
 Sometimes, the update progress of Chinese version is more ahead of schedule. Sorry for the inconvenience!
