@@ -204,6 +204,7 @@ int main() {
 			cout << endl;
 		}	//选项5
 		else if (choice == 6) {
+			adb_shell("sudo mount -o rw,remount /");
 			char lib_id[50];
 			char lib_name[50];
 			cout << "Libertine container management\n\n";
@@ -243,7 +244,6 @@ int main() {
 					else if (choice == 2) {
 						cout << "Enter the ID of the container you want to look up: ";
 						cin.getline(id, 50);
-						cout << "Enter the ID of the container you want to look up: ";
 						libertine(id, "list-apps");
 					}	//Libertine 操作 - 2
 					else if (choice == 3) {
@@ -277,7 +277,7 @@ int main() {
 		}
 		else if (choice == 8) {
 			cout << "Please input lockscreen (admin) password below.\n";
-			adb_shell("sudo mount -o remount,rw /");
+			adb_shell("sudo mount -o rw,remount /");
 		}
 		else if (choice == 9) {
 			system("adb reboot bootloader");
