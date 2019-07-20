@@ -3,6 +3,7 @@
 #include <cstdlib>
 #include <fstream>
 #include <ctime>
+#include <cstdio>
 #define _CRT_SECURE_NO_WARNINGS
 using namespace std;
 
@@ -44,7 +45,7 @@ void libertine(char *id, char *cmd) {
 	char lib[200] = "libertine-container-manager ";
 	strcat(lib, cmd);
 	strcat(lib, " -i ");
-	adb_shell(strcat(lib,id));
+	adb_shell(strcat(lib, id));
 }
 
 void inst_pkg(char *id, char *pkg_name) {
@@ -123,8 +124,8 @@ int main() {
 		strcpy(filepath2, "");
 		cout << "功能列表：\n1. 查看设备的存储容量状态\n";
 		cout << "2. 复制本地文件到设备指定目录\n3. 复制设备文件到本地指定目录\n4. 安装 Android 包到设备（须已部署 Anbox）\n5. 卸载 Android 应用程序\n6. Libertine 桌面应用程序容器\n";
-		cout << "7. 导出设备相册\n8. 重载存储系统可读写\n9. 重启设备至刷机模式\n10. 强制关机\n11. 强制重新启动\n";
-		cout << "12. 重新启动并还原出厂设置\n13. 从刷机模式重启至 Ubuntu Touch\n14. 从刷机模式重启至 Recovery\n15. 从刷机模式刷入非官方 Recovery\n16. 访问设备终端\n17. 重新连接设备\n18. 获取设备序列号" << endl << "--> ";
+		cout << "7. 导入与导出设备相册\n8.导入视频或音频文件\n9. 重载存储系统可读写\n10. 重启设备至刷机模式\n11. 强制关机\n12. 强制重新启动\n";
+		cout << "13. 重新启动并还原出厂设置\n14. 从刷机模式重启至 Ubuntu Touch\n15. 从刷机模式重启至 Recovery\n16. 从刷机模式刷入非官方 Recovery\n17. 访问设备终端\n18. 手动访问 ADB\n19. 重新连接设备\n20. 获取设备序列号" << endl << "--> ";
 		cin >> choice;
 		cin.get();
 		cout << endl;
@@ -271,55 +272,94 @@ int main() {
 			cout << endl;
 		}	//选项6
 		else if (choice == 7) {
-			cout << "请输入本地目标目录路径：";
+			cout << "您希望\n1. 导入照片文件（夹）\n2. 导出...\n--> ";
+			cin >> choice;
+			cin.get();
+			if (choice == 2) {
+				cout << "请输入本地目标目录路径：";
+				cin.getline(filepath1, 200);
+				file_pull("/home/phablet/Pictures", filepath1);
+			}
+			else if (choice == 1) {
+				cout << "请输入本地相片文件（夹）路径：";
+				cin.getline(filepath1, 200);
+				file_push(filepath1, "/home/phablet/Pictures");
+			}
+			cout << endl;
+		} 
+		else if (choice == 8) {
+			cout << "请输入本地视频或音频文件（夹）路径：";
 			cin.getline(filepath1, 200);
-			file_pull("/home/phablet/Pictures", filepath1);
+			cout << "这是一个：\n1. 视频文件（夹）\n2. 音频文件（夹）\n--> ";
+			cin >> choice;
+			cin.get();
+			if (choice == 1)
+				file_push(filepath1, "/home/phablet/Videos");
+			else
+				file_push(filepath1, "/home/phablet/Music");
 			cout << endl;
 		}
-		else if (choice == 8) {
+		else if (choice == 9) {
 			cout << "输入管理员（超级用户权限）密码以完成操作\n";
 			adb_shell("sudo omunt -o rw,remount /");
 		}
-		else if (choice == 9) {
+		else if (choice == 10) {
 			system("adb reboot bootloader");
 		}
-		else if (choice == 10) {
+		else if (choice == 11) {
 			cout << "输入管理员（超级用户权限）密码以完成操作\n";
 			system("adb shell sudo poweroff");
 		}
-		else if (choice == 11) {
+		else if (choice == 12) {
 			system("adb reboot");
 		}
-		else if (choice == 12) {
+		else if (choice == 13) {
 			system("adb reboot bootloader");
 			system("fastboot format cache");
 			system("fastboot format userdata");
 			system("fastboot reboot");
 		}
-		else if (choice == 13) {
+		else if (choice == 14) {
 			system("fastboot reboot");
 			cout << endl;
 		}
-		else if (choice == 14) {
+		else if (choice == 15) {
 			system("fastboot reboot recovery");
 			cout << endl;
 		}
-		else if (choice == 15) {
+		else if (choice == 16) {
 			cout << "请输入 Recovery 镜像文件路径：";
 			cin.getline(filepath1, 200);
 			cout << "确保您的 Ubuntu Touch 设备已进入刷机模式（Fastboot）！\n";
 			char str[500] = "fastboot flash recovery ";
 			system(strcat(str, filepath1));
-		}
-		else if (choice == 16) {
-			system("adb shell");
 			cout << endl;
 		}
 		else if (choice == 17) {
+			system("adb shell");
+			cout << endl;
+		}
+		else if (choice == 18) {
+			system("adb");
+			int i = 0;
+			while(1) {
+				char line[500];
+				if (i == 0)
+					cout << endl << "输入 ADB 指令：";
+				else cout << "输入 ADB 指令（输入 \"exit\"退出 ADB）：";
+				cin.getline(line, 500);
+				if (!strcmp(line, "exit")) break;
+				else if (!strcmp(line, "adb")) cout << endl;
+				system(line);
+				i++;
+			}
+			cout << endl;
+		}
+		else if (choice == 19) {
 			system("adb reconnect");
 			system("adb devices");
 		}
-		else if (choice == 18) {
+		else if (choice == 20) {
 			system("adb get-serialno");
 			cout << endl;
 		}
