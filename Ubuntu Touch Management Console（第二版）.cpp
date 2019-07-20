@@ -124,7 +124,7 @@ int main() {
 		strcpy(filepath2, "");
 		cout << "功能列表：\n1. 查看设备的存储容量状态\n";
 		cout << "2. 复制本地文件到设备指定目录\n3. 复制设备文件到本地指定目录\n4. 安装 Android 包到设备（须已部署 Anbox）\n5. 卸载 Android 应用程序\n6. Libertine 桌面应用程序容器\n";
-		cout << "7. 导入与导出设备相册\n8.导入视频或音频文件\n9. 重载存储系统可读写\n10. 重启设备至刷机模式\n11. 强制关机\n12. 强制重新启动\n";
+		cout << "7. 导入与导出设备相册\n8. 导入视频或音频文件\n9. 重载存储系统可读写\n10. 重启设备至刷机模式\n11. 强制关机\n12. 强制重新启动\n";
 		cout << "13. 重新启动并还原出厂设置\n14. 从刷机模式重启至 Ubuntu Touch\n15. 从刷机模式重启至 Recovery\n16. 从刷机模式刷入非官方 Recovery\n17. 访问设备终端\n18. 手动访问 ADB\n19. 重新连接设备\n20. 获取设备序列号" << endl << "--> ";
 		cin >> choice;
 		cin.get();
@@ -205,7 +205,7 @@ int main() {
 			cout << endl;
 		}	//选项5
 		else if (choice == 6) {
-			adb_shell("sudo omunt -o rw,remount /");
+			adb_shell("sudo mount -o rw,remount /");
 			char lib_id[50];
 			char lib_name[50];
 			cout << "Libertine 容器管理\n\n";
@@ -301,7 +301,7 @@ int main() {
 		}
 		else if (choice == 9) {
 			cout << "输入管理员（超级用户权限）密码以完成操作\n";
-			adb_shell("sudo omunt -o rw,remount /");
+			adb_shell("sudo mount -o rw,remount /");
 		}
 		else if (choice == 10) {
 			system("adb reboot bootloader");
