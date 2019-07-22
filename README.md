@@ -2,7 +2,8 @@
 Connect your Ubuntu Touch device to your computer and manage it with UT Management Console.
 
 - File transfer
-- Export photo album
+- Export & import photo album(s)
+- Import Videos & Musics (Files or Folder)
 - Terminal operations
 - Anbox (Android-in-a-box) related operations
 - Libertine Container Management
