@@ -31,6 +31,14 @@ void file_pull(char *start, char *end) {
 	system(strcat(pull, end));
 }
 
+void backupf(char *file, char *target) {
+	char pull[500] = "adb pull ";
+	strcat(pull, file);
+	strcat(pull, " ");
+	strcat(pull, target);
+	system(pull);
+}
+
 void get_img(char *code) {
 	char cmd[200] = "wget http://cdimage.ubports.com/anbox-images/anbox-boot-";
 	strcat(cmd, code);
@@ -95,6 +103,19 @@ void apk_inst(char *filepath) {
 	adb_shell(strcat(inst, filepath));
 }
 
+void mkdir(char *folder, char *backtype) {
+	char dir[500] = "mkdir ";
+	strcat(dir, folder);
+	strcat(dir, "\\UTBackup-");
+	strcat(dir, backtype);
+	system(dir);
+	char cur[500] = "";
+	strcat(cur, folder);
+	strcat(cur, "\\UTBackup-");
+	strcat(cur, backtype);
+	strcpy(folder, cur);
+}
+
 int main() {
 	int choice;
 	lapse(1);
@@ -120,7 +141,6 @@ int main() {
 		else cout << endl;
 	}
 	if (choice == 1) {
-		lapse(1);
 		cout << endl;
 	}
 	else if (choice == 3) {
@@ -141,7 +161,7 @@ int main() {
 		cout << "功能列表：\n1. 查看设备的存储容量状态\n";
 		cout << "2. 复制本地文件到设备指定目录\n3. 复制设备文件到本地指定目录\n4. 安装 Android 包到设备\n5. 卸载 Android 应用程序\n6. Libertine 桌面应用程序容器\n";
 		cout << "7. 导入与导出设备相册\n8. 导入视频或音频文件\n9. 重载存储系统可读写\n10. 重启设备至刷机模式\n11. 强制关机\n12. 强制重新启动\n";
-		cout << "13. 重新启动并还原出厂设置\n14. 从刷机模式重启至 Ubuntu Touch\n15. 从刷机模式重启至 Recovery\n16. 从刷机模式刷入非官方 Recovery\n17. 访问设备终端\n18. 手动访问 ADB\n19. 重新连接设备\n20. 获取设备序列号" << endl << "--> ";
+		cout << "13. 重新启动并还原出厂设置\n14. 从刷机模式重启至 Ubuntu Touch\n15. 从刷机模式重启至 Recovery\n16. 从刷机模式刷入非官方 Recovery\n17. 访问设备终端\n18. 手动访问 ADB\n19. 重新连接设备\n20. 获取设备序列号\n21. 备份您的 Ubuntu Touch 设备" << endl << "--> ";
 		cin >> choice;
 		cin.get();
 		cout << endl;
@@ -460,6 +480,47 @@ instapk:
 		else if (choice == 20) {
 			system("adb get-serialno");
 			cout << endl;
+		}
+		else if (choice == 21) {
+			cout << "请输入需要备份到的本地文件目录（文件夹）路径：";
+			cin.getline(filepath1, 200);
+			cout << "您的设备是否已部署了 Anbox？\n1. 是的\n2. 没有\n--> ";
+			cin >> choice;
+			cin.get();
+			if (choice == 1) {
+				cout << endl << "我们可以为您备份 Anbox 数据，但如果您需要抹去所有数据，您的 Ubuntu Touch 将需要被重新安装！\n";
+			}
+			cout << endl << "请选择备份数据\n1. 全部资料\n2. 所有多媒体数据（音/视频、图片）\n3. 下载内容\n4. 文档\n--> ";
+			cin >> choice;
+			cin.get();
+			cout << endl;
+			if (choice == 1) {
+				mkdir(filepath1, "all");
+				backupf("/home/phablet/anbox-data", filepath1);
+				backupf("/home/phablet/Desktop", filepath1);
+				backupf("/home/phablet/Documents", filepath1);
+				backupf("/home/phablet/Downloads", filepath1);
+				backupf("/home/phablet/Music", filepath1);
+				backupf("/home/phablet/Pictures", filepath1);
+				backupf("/home/phablet/Public", filepath1);
+				backupf("/home/phablet/Templates", filepath1);
+				backupf("/home/phablet/Videos", filepath1);
+			}	//备份全部资料
+			else if (choice == 2) {
+				mkdir(filepath1, "media");
+				backupf("/home/phablet/Music", filepath1);
+				backupf("/home/phablet/Pictures", filepath1);
+				backupf("/home/phablet/Videos", filepath1);
+			}	//所有多媒体数据
+			else if (choice == 3) {
+				mkdir(filepath1, "downs");
+				backupf("/home/phablet/Downloads", filepath1);
+			}	//备份下载内容
+			else if (choice == 4) {
+				mkdir(filepath1, "docs");
+				backupf("/home/phablet/Documents", filepath1);
+			}	//备份文档
+			cout << endl << "备份已完成！" << endl << endl;
 		}
 	}	//功能列表循环
 }
