@@ -3,7 +3,7 @@ Connect your Ubuntu Touch device to your computer and manage it with UT Manageme
 
 - File transfer
 - Export & import photo album(s)
-- Import Videos & Musics (Files or Folder)
+- Import videos & music (files or folder)
 - External data backup
 - Terminal operations
 - Anbox (Android-in-a-box) related operations
