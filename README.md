@@ -16,6 +16,8 @@ Note: Whether Anbox related operations can be done depends on whether the Androi
 
 This programme is only for Windows! I'll rewrite the terminal pipe operation to add support for Mac soon!
 
+About Wget: So far, Wget for UTMC must be placed under the folder where ADB setups are. If you place it under System32 directly, UTMC might not be able to detect and launch related options correctly in some cases.
+
 My emails:
 yantq0927@gmail.com | henry0927@outlook.com
 
