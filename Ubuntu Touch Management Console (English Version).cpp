@@ -30,6 +30,30 @@ void file_pull(char *start, char *end) {
 	system(strcat(pull, end));
 }
 
+void backupf(char *file, char *target) {
+	char pull[500] = "adb pull ";
+	strcat(pull, file);
+	strcat(pull, " ");
+	strcat(pull, target);
+	system(pull);
+}
+
+void get_img(char *code) {
+	char cmd[200] = "wget http://cdimage.ubports.com/anbox-images/anbox-boot-";
+	strcat(cmd, code);
+	strcat(cmd, ".img");
+	system(cmd);
+}
+
+void flash_img(char *code, char *part) {
+	char cmd[200] = "fastboot flash ";
+	strcat(cmd, part);
+	strcat(cmd, " anbox-boot-");
+	strcat(cmd, code);
+	strcat(cmd, ".img");
+	system(cmd);
+}
+
 void create_lib(char *id, char *name) {
 	cout << "Creating Libertine Desktop " << name << ". Keep the programme running, please..." << endl;
 	char create[200] = "libertine-container-manager create -i ";
@@ -78,6 +102,19 @@ void apk_inst(char *filepath) {
 	adb_shell(strcat(inst, filepath));
 }
 
+void mkdir(char *folder, char *backtype) {
+	char dir[500] = "mkdir ";
+	strcat(dir, folder);
+	strcat(dir, "\\UTBackup-");
+	strcat(dir, backtype);
+	system(dir);
+	char cur[500] = "";
+	strcat(cur, folder);
+	strcat(cur, "\\UTBackup-");
+	strcat(cur, backtype);
+	strcpy(folder, cur);
+}
+
 int main() {
 	int choice;
 	lapse(1);
@@ -123,8 +160,8 @@ int main() {
 		strcpy(filepath2, "");
 		cout << "Menu:\n1. Read storage status of your UT device\n";
 		cout << "2. Copy file(s) to your device\n3. Copy file(s) from...\n4. Install APK(s) (Anbox required)\n5. Uninstall APK(s)\n6. Libertine container management\n";
-		cout << "7. Export photo albums\n8. Remount main storage as read-and-write\n9. Reboot to bootloader (Fastboot mode)\n10. Shutdown (Forced)\n11. Reboot (Forced)\n";
-		cout << "12. Reboot and factory reset\n13. Reboot to Ubuntu Touch from bootloader (Fastboot mode)\n14. Reboot to recovery from bootloader (Fastboot mode)\n15. Flash third-party recovery in bootloader (Fastboot mode)\n16. Ubuntu Touch terminal\n17. Reconnect your device\n18. Serial no. of your device" << endl << "--> ";
+		cout << "7. Export (Import) photo albums\n8. Import media file(s)\n9. Remount main storage as read-and-write\n10. Reboot to bootloader (Fastboot mode)\n11. Shutdown (Forced)\n12. Reboot (Forced)\n";
+		cout << "13. Reboot and factory reset\n14. Reboot to Ubuntu Touch from bootloader (Fastboot mode)\n15. Reboot to recovery from bootloader (Fastboot mode)\n16. Flash third-party recovery in bootloader (Fastboot mode)\n17. Ubuntu Touch terminal\n18. Manually access ADB\n19. Reconnect your device\n20. Serial no. of your device\n21. Backup your device" << endl << "--> ";
 		cin >> choice;
 		cin.get();
 		cout << endl;
@@ -167,30 +204,112 @@ int main() {
 			char *apk_name;
 			int count = 0;
 			int flag;
-			cout << "Path of the local APK to be installed on your device: ";
-			cin.getline(filepath1, 200);
-			file_push(filepath1, save_path);
-			for (int i = 0; i < 500; i++) {
-				if (filepath1[i] == '.' && filepath1[i + 1] == 'a' && filepath1[i + 2] == 'p' && filepath1[i + 3] == 'k') {
-					for (int k = i + 3; k > 0; k--) {
-						count++;
-						if (filepath1[k] == '\\') {
-							flag = k;
+			cout << "Already had Anbox installed on your device？\n1. Yes.\n2. Not yet.\n--> ";
+			cin >> choice;
+			cin.get();
+			if (choice == 1) {
+instapk:
+				while(1) {
+					cout << endl << "Local path of the APK file (Type 'exit' and enter to go back): ";
+					cin.getline(filepath1, 200);
+					if (strcmp(filepath1, "exit") == 0) break;
+					file_push(filepath1, save_path);
+					for (int i = 0; i < 500; i++) {
+						if (filepath1[i] == '.' && filepath1[i + 1] == 'a' && filepath1[i + 2] == 'p' && filepath1[i + 3] == 'k') {
+							for (int k = i + 3; k > 0; k--) {
+								count++;
+								if (filepath1[k] == '\\') {
+									flag = k;
+									break;
+								}
+							}
 							break;
-						}
+						}	//找到 .apk 字样
+					}	//得到 apk 文件名
+					apk_name = new char[count];
+					apk_name[count - 1] = '\0';
+					for (int i = flag + 1, k = 0, calc = 0; calc < count; calc++, i++, k++) {
+						apk_name[k] = filepath1[i];
+					}	//得到 apk 文件名
+					cout << "Name of the pakcage: " << apk_name << endl;
+					strcat(save_path, "/");
+					strcat(save_path, apk_name);
+					apk_inst(save_path);
+				}
+			}
+			else if (choice == 2) {
+				while (1) {
+					cout << endl << "Install Anbox for Ubuntu Touch now？\n1. What is Anbox？\n2. OK.\n3. Cancel installation\n4. Install Android apps\n--> ";
+					cin >> choice;
+					cin.get();
+					if (choice == 1) {
+						cout << endl << "Anbox is an Android simulator running on Linux.\nInstalling Anbox on Ubuntu Touch just like deploying an Android simulator (virtualbox) on your device.\nThen you'll be able to install and use Android apps on Ubuntu Touch.\nIf your device was purchased from Team Forth，there's Anbox pre-installed，and no more installation is needed.\n\nPress 'Enter' to go back...";
+						cin.get();
+						cout << endl;
 					}
-					break;
-				}	//找到 .apk 字样
-			}	//得到 apk 文件名
-			apk_name = new char[count];
-			apk_name[count - 1] = '\0';
-			for (int i = flag + 1, k = 0, calc = 0; calc < count; calc++, i++, k++) {
-				apk_name[k] = filepath1[i];
-			}	//得到 apk 文件名
-			cout << "APK filename: " << apk_name << endl;
-			strcat(save_path, "/");
-			strcat(save_path, apk_name);
-			apk_inst(save_path);
+					else if (choice == 2) {
+						char codename[20];
+						char partitionname[20];
+						cout << endl << "Anbox is available on the following devices:\n1. Meizu Pro 5\n2. LG Nexus 5\n3. OnePlus One\n4. Fairphone 2\n5. BQ M10 HD\n6. BQ M10 FHD\nPlease choose your device--> ";
+						cin >> choice;
+						cin.get();
+						if (choice == 1) {
+							strcpy(codename, "turbo");
+							strcpy(partitionname, "bootimg");
+						}	// MEIZU
+						else if (choice == 2) {
+							strcpy(codename, "hammerhead");
+							strcpy(partitionname, "boot");
+						}	//NEXUS
+						else if (choice == 3) {
+							strcpy(codename, "bacon");
+							strcpy(partitionname, "boot");
+						}	//OPO
+						else if (choice == 4) {
+							strcpy(codename, "FP2");
+							strcpy(partitionname, "boot");
+						}	//FP2
+						else if (choice == 6) {
+							strcpy(codename, "frieza");
+							strcpy(partitionname, "boot");
+						}	//FHD
+						else if (choice == 5) {
+							strcpy(codename, "cooler");
+							strcpy(partitionname, "boot");
+						}	//HD
+						cout << endl << "Entering bootloader..." << endl;
+						adb_shell("sudo reboot -f bootloader");
+						cout << "Dowloading Anbox image(s)..." << endl;
+						get_img(codename);
+						cout << "Flashing Anbox image(s)..." << endl;
+						flash_img(codename, partitionname);
+						cout << "Rebooting..." << endl;
+						system("fastboot reboot");
+						cout << "[Action acquired!]Press 'Enter' to continue after the device fully reboots...";
+						cin.get();
+						cout << "Remounting system storage as writable..." << endl;
+						adb_shell("sudo mount -o rw,remount /");
+						cout << "Upgrading source Aptitude..." << endl;
+						adb_shell("sudo apt update");
+						cout << "Downloading Anbox..." << endl;
+						adb_shell("sudo apt install anbox-ubuntu-touch");
+						cout << "Installing..." << endl;
+						adb_shell("anbox-tool install");
+						cout << "Installing ADB for Anbox..." << endl;
+						adb_shell("sudo apt update");
+						adb_shell("sudo apt install android-tools-adb");
+						cout << endl;
+						cout << "All done!" << endl;
+						cout << endl;
+						goto instapk;
+					}	//安装 Anbox
+					else if (choice == 3) break;
+					else if (choice == 4) {
+						cout << endl;
+						goto instapk;
+					}
+				}	// 安装 Anbox 与否
+			}
 			cout << endl;
 		}	//选项4
 		else if (choice == 5) {
@@ -270,57 +389,136 @@ int main() {
 			cout << endl;
 		}	//选项6
 		else if (choice == 7) {
-			cout << "Path of target local directory (drag to here): ";
-			cin.getline(filepath1, 200);
-			file_pull("/home/phablet/Pictures", filepath1);
+			cout << "You're willing to:\n1. Import image(s) or image folder(s)\n2. Export...\n--> ";
+			cin >> choice;
+			cin.get();
+			if (choice == 2) {
+				cout << "Path of target local directory (drag to here): ";
+				cin.getline(filepath1, 200);
+				file_pull("/home/phablet/Pictures", filepath1);
+			}
+			else if (choice == 1) {
+				cout << "Path of the local image file or folder (drag to here): ";
+				cin.getline(filepath1, 200);
+				file_push(filepath1, "/home/phablet/Pictures");
+			}
 			cout << endl;
 		}
 		else if (choice == 8) {
+			cout << "Path of the local video or music file or folder (drag to here): ";
+			cin.getline(filepath1, 200);
+			cout << "This is a:\n1. Video file (folder)\n2. Music file (folder)\n--> ";
+			cin >> choice;
+			cin.get();
+			if (choice == 1)
+				file_push(filepath1, "/home/phablet/Videos");
+			else
+				file_push(filepath1, "/home/phablet/Music");
+			cout << endl;
+		}
+		else if (choice == 9) {
 			cout << "Please input lockscreen (admin) password below.\n";
 			adb_shell("sudo mount -o rw,remount /");
 		}
-		else if (choice == 9) {
+		else if (choice == 10) {
 			system("adb reboot bootloader");
 		}
-		else if (choice == 10) {
+		else if (choice == 11) {
 			cout << "Please input lockscreen (admin) password below.\n";
 			system("adb shell sudo poweroff");
 		}
-		else if (choice == 11) {
+		else if (choice == 12) {
 			system("adb reboot");
 		}
-		else if (choice == 12) {
+		else if (choice == 13) {
 			system("adb reboot bootloader");
 			system("fastboot format cache");
 			system("fastboot format userdata");
 			system("fastboot reboot");
 		}
-		else if (choice == 13) {
+		else if (choice == 14) {
 			system("fastboot reboot");
 			cout << endl;
 		}
-		else if (choice == 14) {
+		else if (choice == 15) {
 			system("fastboot reboot recovery");
 			cout << endl;
 		}
-		else if (choice == 15) {
+		else if (choice == 16) {
 			cout << "Path of the local recovery file (.img) (drag to here): ";
 			cin.getline(filepath1, 200);
 			cout << "Make sure your Ubuntu Touch device is in bootloader (Fastboot mode)!\n";
 			char str[500] = "fastboot flash recovery ";
 			system(strcat(str, filepath1));
 		}
-		else if (choice == 16) {
+		else if (choice == 17) {
 			system("adb shell");
 			cout << endl;
 		}
-		else if (choice == 17) {
+		else if (choice == 18) {
+			system("adb");
+			int i = 0;
+			while(1) {
+				char line[500];
+				if (i == 0)
+					cout << endl << "Enter ADB command: ";
+				else cout << "Enter ADB command (Enter 'exit' to quit ADB): ";
+				cin.getline(line, 500);
+				if (!strcmp(line, "exit")) break;
+				else if (!strcmp(line, "adb")) cout << endl;
+				system(line);
+				i++;
+			}
+			cout << endl;
+		}
+		else if (choice == 19) {
 			system("adb reconnect");
 			system("adb devices");
 		}
-		else if (choice == 18) {
+		else if (choice == 20) {
 			system("adb get-serialno");
 			cout << endl;
+		}
+		else if (choice == 21) {
+			cout << "Local directory where the backup files are stored (drag to here): ";
+			cin.getline(filepath1, 200);
+			cout << "Is Anbox deployed on your device?\n1. Yes\n2. No\n--> ";
+			cin >> choice;
+			cin.get();
+			if (choice == 1) {
+				cout << endl << "We can help you backup Anbox data, but if you are resetting your device, Anbox should be re-installed after the reset!\n";
+			}
+			cout << endl << "Choose to backup:\n1. All data\n2. All media (music/videos/images)\n3. Downloads\n4. Documents\n--> ";
+			cin >> choice;
+			cin.get();
+			cout << endl;
+			if (choice == 1) {
+				mkdir(filepath1, "all");
+				backupf("/home/phablet/anbox-data", filepath1);
+				backupf("/home/phablet/Desktop", filepath1);
+				backupf("/home/phablet/Documents", filepath1);
+				backupf("/home/phablet/Downloads", filepath1);
+				backupf("/home/phablet/Music", filepath1);
+				backupf("/home/phablet/Pictures", filepath1);
+				backupf("/home/phablet/Public", filepath1);
+				backupf("/home/phablet/Templates", filepath1);
+				backupf("/home/phablet/Videos", filepath1);
+			}	//备份全部资料
+			else if (choice == 2) {
+				mkdir(filepath1, "media");
+				backupf("/home/phablet/Music", filepath1);
+				backupf("/home/phablet/Pictures", filepath1);
+				backupf("/home/phablet/Videos", filepath1);
+			}	//所有多媒体数据
+			else if (choice == 3) {
+				mkdir(filepath1, "downs");
+				backupf("/home/phablet/Downloads", filepath1);
+			}	//备份下载内容
+			else if (choice == 4) {
+				mkdir(filepath1, "docs");
+				backupf("/home/phablet/Documents", filepath1);
+			}	//备份文档
+			cout << endl << "Backup finished!" << endl << endl;
 		}
 	}	//功能列表循环
 }
