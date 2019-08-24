@@ -152,6 +152,35 @@ int main() {
 			system("fastboot reboot");
 		}
 	}
+	cout << "您的设备是否购买自 Team Forth 或您的设备是否已安装 Anbox？\n1. 是的\n2. 不是\n--> ";
+	cin >> choice;
+	cin.get();
+	if (choice == 1) {
+		cout << "\n您的设备是否已完全进入系统？\n请按 Enter 键确认...";
+		cin.get();
+		cout << endl;
+		adb_shell("adb devices");
+		cout << "Anbox 是否被正确识别（出现“********* device”字样）？\n1. 是的\n2. 没有\n--> ";
+		cin >> choice;
+		if (choice == 1) cout << endl << "您可以正常使用 Anbox（Android）相关操作。\n";
+		else if (choice == 2) {
+			cout << endl << "您的设备未安装 Anbox 或 Anbox 部署异常。如遇后者，是否需要重启设备？\n1. 好的\n2. 直接进入功能列表\n--> ";
+			cin >> choice;
+			if (choice == 1) {
+				system("fastboot reboot");
+				lapse(1);
+				cout << "\n如遇问题，您可以在“安装 Android 包到设备”选项中部署或重新部署 Anbox。\n";
+			}
+			else if (choice == 2) {
+				lapse(1);
+				cout << "\n您可以在“安装 Android 包到设备”选项中部署或重新部署 Anbox。\n";
+			}
+		}
+	}
+	else {
+		lapse(1);
+		cout << "\n您可以在“安装 Android 包到设备”选项中部署或重新部署 Anbox。\n";
+	}
 	cout << endl;
 	while (1) {
 		char filepath1[200];
@@ -317,9 +346,11 @@ instapk:
 			char uninst[500] = "adb uninstall ";
 			cout << "APK 包列表如下：" << endl;
 			adb_shell("adb shell pm list packages");
-			cout << endl << "请输入对应包名以卸载 Android 应用程序：";
+			cout << endl << "请输入对应包名以卸载 Android 应用程序（输入“exit”并回车以退出）：";
 			cin.getline(package, 200);
-			adb_shell(strcat(uninst, package));
+			if (strcmp(package,"exit") != 0) {
+				adb_shell(strcat(uninst, package));
+			}
 			cout << endl;
 		}	//选项5
 		else if (choice == 6) {
