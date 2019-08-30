@@ -152,6 +152,35 @@ int main() {
 			system("fastboot reboot");
 		}
 	}
+	cout << "Has Anbox been deployed on your device?\n1. Yes.\n2. No.\n--> ";
+	cin >> choice;
+	cin.get();
+	if (choice == 1) {
+		cout << "\nIs your device fully rebooted?\nPress Enter to confirm...";
+		cin.get();
+		cout << endl;
+		adb_shell("adb devices");
+		cout << "Is Anbox correctly detected? (With '********* device' displayed)\n1. Yes.\n2. No.\n--> ";
+		cin >> choice;
+		if (choice == 1) cout << endl << "You can deploy Anbox（Android) related options properly.\n";
+		else if (choice == 2) {
+			cout << endl << "Anbox is not correctly installed or initialized.\nReboot is recommended if not correctly initialized!\nReboot your device now?\n1. OK.\n2. Directly enter the menu\n--> ";
+			cin >> choice;
+			if (choice == 1) {
+				system("fastboot reboot");
+				lapse(1);
+				cout << "\nIf there's any problem, you can choose to install or reinstall Anbox through the 'Install APK(s)' option.\n";
+			}
+			else if (choice == 2) {
+				lapse(1);
+				cout << "\nYou can choose to install or reinstall Anbox through the 'Install APK(s)' option.\n";
+			}
+		}
+	}
+	else {
+		lapse(1);
+		cout << "\nYou can choose to install or reinstall Anbox through the 'Install APK(s)' option.\n";
+	}
 	cout << endl;
 	while (1) {
 		char filepath1[200];
@@ -317,9 +346,11 @@ instapk:
 			char uninst[500] = "adb uninstall ";
 			cout << "List of APKs installed:" << endl;
 			adb_shell("adb shell pm list packages");
-			cout << endl << "The package name of the app to be removed: ";
+			cout << endl << "The package name of the app to be removed (Enter 'exit' to quit removing APK(s)): ";
 			cin.getline(package, 200);
-			adb_shell(strcat(uninst, package));
+			if (strcmp(package,"exit") != 0) {
+				adb_shell(strcat(uninst, package));
+			}
 			cout << endl;
 		}	//选项5
 		else if (choice == 6) {
