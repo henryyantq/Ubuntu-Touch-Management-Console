@@ -394,7 +394,7 @@ instapk:
 					else if (choice == 2) {
 						cout << "请输入您需要查看的容器 ID：";
 						cin.getline(id, 50);
-						cout << "该容器包含以下包：";
+						cout << "该容器包含以下包：" << endl;
 						libertine(id, "list-apps");
 					}	//Libertine 操作 - 2
 					else if (choice == 3) {
