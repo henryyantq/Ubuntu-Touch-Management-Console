@@ -19,6 +19,8 @@ This programme is only for Windows! I'll rewrite the terminal pipe operation to 
 
 About Wget: So far, Wget for UTMC must be placed under the folder where ADB setups are. If you place it under System32 directly, UTMC might not be able to detect and launch related options correctly in some cases.
 
+About VC_Redist: So far, a few PCs have (32-bit's are more likely to) shown the issue 'missing api-ms-win-crt-runtimel1-1-0.dll' when initializing UTMC. The most efficient solution so far is installing VC_Redist as a gadget (or something like that).
+
 My emails:
 yantq0927@gmail.com | henry0927@outlook.com
 
