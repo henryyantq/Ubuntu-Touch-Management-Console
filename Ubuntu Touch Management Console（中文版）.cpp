@@ -202,6 +202,8 @@ int main() {
 		cout << endl;
 		if (choice == 1) {
 			adb_shell("df -H");
+			cout << endl << "请按回车键继续...";
+			cin.get();
 			cout << endl;
 		}	//选项1
 		else if (choice == 2) {
