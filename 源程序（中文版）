@@ -7,31 +7,31 @@
 #define _CRT_SECURE_NO_WARNINGS
 using namespace std;
 
-void adb_shell(char *cmd) {
+inline void adb_shell(char *cmd) {
 	char shell[200] = "adb shell ";
 	system(strcat(shell, cmd));
 }
 
-void cd(char *root) {
+inline void cd(char *root) {
 	char cmd[200] = "cd ";
 	adb_shell(strcat(cmd, root));
 }
 
-void file_push(char *start, char *end) {
+inline void file_push(char *start, char *end) {
 	char push[500] = "adb push ";
 	strcat(push, start);
 	strcat(push, " ");
 	system(strcat(push, end));
 }
 
-void file_pull(char *start, char *end) {
+inline void file_pull(char *start, char *end) {
 	char pull[500] = "adb pull ";
 	strcat(pull, start);
 	strcat(pull, " ");
 	system(strcat(pull, end));
 }
 
-void backupf(char *file, char *target) {
+inline void backupf(char *file, char *target) {
 	char pull[500] = "adb pull ";
 	strcat(pull, file);
 	strcat(pull, " ");
@@ -39,14 +39,14 @@ void backupf(char *file, char *target) {
 	system(pull);
 }
 
-void get_img(char *code) {
+inline void get_img(char *code) {
 	char cmd[200] = "wget http://cdimage.ubports.com/anbox-images/anbox-boot-";
 	strcat(cmd, code);
 	strcat(cmd, ".img");
 	system(cmd);
 }
 
-void flash_img(char *code, char *part) {
+inline void flash_img(char *code, char *part) {
 	char cmd[200] = "fastboot flash ";
 	strcat(cmd, part);
 	strcat(cmd, " anbox-boot-");
@@ -55,7 +55,7 @@ void flash_img(char *code, char *part) {
 	system(cmd);
 }
 
-void create_lib(char *id, char *name) {
+inline void create_lib(char *id, char *name) {
 	cout << "正在创建 Libertine 容器 " << name << " 。需要一段时间，请勿关闭程序..." << endl;
 	char create[200] = "libertine-container-manager create -i ";
 	strcat(create, id);
@@ -65,14 +65,14 @@ void create_lib(char *id, char *name) {
 	adb_shell(strcat(create, "'"));
 }
 
-void libertine(char *id, char *cmd) {
+inline void libertine(char *id, char *cmd) {
 	char lib[200] = "libertine-container-manager ";
 	strcat(lib, cmd);
 	strcat(lib, " -i ");
 	adb_shell(strcat(lib, id));
 }
 
-void inst_pkg(char *id, char *pkg_name) {
+inline void inst_pkg(char *id, char *pkg_name) {
 	cout << "正在安装桌面应用程序包 " << pkg_name << " 。需要一段时间，请勿关闭程序..." << endl;
 	char lib[200] = "libertine-container-manager install-package -i ";
 	strcat(lib, id);
@@ -80,7 +80,7 @@ void inst_pkg(char *id, char *pkg_name) {
 	adb_shell(strcat(lib, pkg_name));
 }	//Libertine 操作
 
-void uninst_pkg(char *id, char *pkg_name) {
+inline void uninst_pkg(char *id, char *pkg_name) {
 	cout << "正在移除桌面应用程序包 " << pkg_name << " 。需要一段时间，请勿关闭程序..." << endl;
 	char lib[200] = "libertine-container-manager remove-package -i ";
 	strcat(lib, id);
@@ -88,7 +88,7 @@ void uninst_pkg(char *id, char *pkg_name) {
 	adb_shell(strcat(lib, pkg_name));
 }	//Libertine 操作
 
-void lapse(double dur) {
+inline void lapse(double dur) {
 	time_t start, end;
 	start = clock();
 	end = start;
@@ -98,12 +98,12 @@ void lapse(double dur) {
 	}
 }
 
-void apk_inst(char *filepath) {
+inline void apk_inst(char *filepath) {
 	char inst[500] = "adb install ";
 	adb_shell(strcat(inst, filepath));
 }
 
-void mkdir(char *folder, char *backtype) {
+inline void mkdir(char *folder, char *backtype) {
 	char dir[500] = "mkdir ";
 	strcat(dir, folder);
 	strcat(dir, "\\UTBackup-");
@@ -129,9 +129,15 @@ int main() {
 		cout << "对不起，请您部署完成 ADB 调试环境后再运行本程序。";
 		exit(0);
 	}
-	cout << endl << "正在初始化 ADB 服务端...\n\n";
-	system("adb kill-server");
-	system("adb start-server");
+	cout << endl << "正在初始化 ADB 服务端...\n";
+	cout << "您是否在上一次桌面及 Ubuntu Touch 设备休眠或关机后使用过 Ubuntu Touch 设备管理（或 ADB）？\n1. 是的\n2. 并没有\n--> ";
+	cin >> choice;
+	cin.get();
+	if (choice == 1) cout << endl;
+	else if (choice == 2) {
+		system("adb kill-server");
+		system("adb start-server");
+	}
 	while (1) {
 		system("adb devices");
 		cout << "您的 Ubuntu Touch 设备是否被识别正确？\n1、是的\n2、再试一次\n3、我的设备处于刷机模式\n--> ";
@@ -394,7 +400,7 @@ instapk:
 					else if (choice == 2) {
 						cout << "请输入您需要查看的容器 ID：";
 						cin.getline(id, 50);
-						cout << "该容器包含以下包：";
+						cout << "该容器包含以下包：\n";
 						libertine(id, "list-apps");
 					}	//Libertine 操作 - 2
 					else if (choice == 3) {
