@@ -162,6 +162,7 @@ int main() {
 	cin >> choice;
 	cin.get();
 	if (choice == 1) {
+Reboot:
 		cout << "\n您的设备是否已完全进入系统？\n请按 Enter 键确认...";
 		cin.get();
 		cout << endl;
@@ -172,10 +173,10 @@ int main() {
 		else if (choice == 2) {
 			cout << endl << "您的设备未安装 Anbox 或 Anbox 部署异常。如遇后者，是否需要重启设备？\n1. 好的\n2. 直接进入功能列表\n--> ";
 			cin >> choice;
+			cin.get();
 			if (choice == 1) {
-				system("fastboot reboot");
-				lapse(1);
-				cout << "\n如遇问题，您可以在“安装 Android 包到设备”选项中部署或重新部署 Anbox。\n";
+				system("adb reboot");
+				goto Reboot;
 			}
 			else if (choice == 2) {
 				lapse(1);
