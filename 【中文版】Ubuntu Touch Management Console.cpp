@@ -17,18 +17,15 @@ inline void cd(char *root) {
 	adb_shell(strcat(cmd, root));
 }
 
-inline void file_push(char *start, char *end) {
-	char push[500] = "adb push ";
-	strcat(push, start);
-	strcat(push, " ");
-	system(strcat(push, end));
-}
-
-inline void file_pull(char *start, char *end) {
-	char pull[500] = "adb pull ";
-	strcat(pull, start);
-	strcat(pull, " ");
-	system(strcat(pull, end));
+inline void file_transfer(char *start, char *end, int Switch) {
+	char cmd[500];
+	if (Switch == 1) 
+		strcpy(cmd, "adb push ");
+	else 
+		strcpy(cmd, "adb pull ");
+	strcat(cmd, start);
+	strcat(cmd, " ");
+	system(strcat(cmd, end));
 }
 
 inline void backupf(char *file, char *target) {
@@ -216,17 +213,17 @@ Reboot:
 			cin.get();
 			cout << endl;
 			if (choice == 1)
-				file_push(filepath1, "/home/phablet");
+				file_transfer(filepath1, "/home/phablet", 1);
 			else if (choice == 2)
-				file_push(filepath1, "/home/phablet/Documents");
+				file_transfer(filepath1, "/home/phablet/Documents", 1);
 			else if (choice == 3)
-				file_push(filepath1, "/home/phablet/Downloads");
+				file_transfer(filepath1, "/home/phablet/Downloads", 1);
 			else if (choice == 4)
-				file_push(filepath1, "/home/phablet/Music");
+				file_transfer(filepath1, "/home/phablet/Music", 1);
 			else if (choice == 5)
-				file_push(filepath1, "/home/phablet/Pictures");
+				file_transfer(filepath1, "/home/phablet/Pictures", 1);
 			else if (choice == 6)
-				file_push(filepath1, "/home/phablet/Videos");
+				file_transfer(filepath1, "/home/phablet/Videos", 1);
 			cout << endl;
 		}	//选项2
 		else if (choice == 3) {
@@ -234,7 +231,7 @@ Reboot:
 			cin.getline(filepath2, 200);
 			cout << "本地目标目录路径：";
 			cin.getline(filepath1, 200);
-			file_pull(filepath2, filepath1);
+			file_transfer(filepath2, filepath1, 2);
 			cout << endl;
 		}	//选项3
 		else if (choice == 4) {
@@ -251,7 +248,7 @@ instapk:
 					cout << endl << "本地安卓文件路径（输入“exit”并回车以退出）：";
 					cin.getline(filepath1, 200);
 					if (strcmp(filepath1, "exit") == 0) break;
-					file_push(filepath1, save_path);
+					file_transfer(filepath1, save_path, 1);
 					for (int i = 0; i < 500; i++) {
 						if (filepath1[i] == '.' && filepath1[i + 1] == 'a' && filepath1[i + 2] == 'p' && filepath1[i + 3] == 'k') {
 							for (int k = i + 3; k > 0; k--) {
@@ -436,12 +433,12 @@ instapk:
 			if (choice == 2) {
 				cout << "请输入本地目标目录路径：";
 				cin.getline(filepath1, 200);
-				file_pull("/home/phablet/Pictures", filepath1);
+				file_transfer("/home/phablet/Pictures", filepath1, 2);
 			}
 			else if (choice == 1) {
 				cout << "请输入本地相片文件（夹）路径：";
 				cin.getline(filepath1, 200);
-				file_push(filepath1, "/home/phablet/Pictures");
+				file_transfer(filepath1, "/home/phablet/Pictures", 1);
 			}
 			cout << endl;
 		} 
@@ -452,9 +449,9 @@ instapk:
 			cin >> choice;
 			cin.get();
 			if (choice == 1)
-				file_push(filepath1, "/home/phablet/Videos");
+				file_transfer(filepath1, "/home/phablet/Videos", 1);
 			else
-				file_push(filepath1, "/home/phablet/Music");
+				file_transfer(filepath1, "/home/phablet/Music", 1);
 			cout << endl;
 		}
 		else if (choice == 9) {
