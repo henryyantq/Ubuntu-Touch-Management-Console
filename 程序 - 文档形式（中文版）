@@ -457,6 +457,9 @@ instapk:
 		else if (choice == 9) {
 			cout << "输入管理员（超级用户权限）密码以完成操作\n";
 			adb_shell("sudo mount -o rw,remount /");
+			cout << "重新挂载系统分区读取权限：可读写完成！\n请按回车键继续......";
+			cin.get();
+			cout << endl;
 		}
 		else if (choice == 10) {
 			system("adb reboot bootloader");
