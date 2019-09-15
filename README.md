@@ -19,8 +19,8 @@ This programme is only for Windows! I'll rewrite the terminal pipe operation to 
 
 About Wget: So far, Wget for UTMC must be placed under the folder where ADB setups are. If you place it under System32 directly, UTMC might not be able to detect and launch related options correctly in some cases.
 
-About VC_Redist: So far, a few PCs have (32-bit's are more likely to) shown the issue 'missing api-ms-win-crt-runtimel1-1-0.dll' when initializing UTMC. The most efficient solution so far is installing VC_Redist as a gadget (or something like that).
-Attention: VC_Redist is not an essential widget for all PCs. Actually, the installation is only required after the issue above certainly shows up.
+About VC_Redist: So far, a few PCs have (32-bit's are more likely to) shown the issue 'missing api-ms-win-crt-runtimel1-1-0.dll' when initializing UTMC. The most efficient solution so far is installing VC_Redist as a widget (or something like that).
+Attention: VC_Redist is not an essential widget for all PCs. Actually, the installation is only required after the issue above certainly shows up, since it might slows down the existed compiler(s) or runtime emvironment on your PC, which may cause unwanted trouble.
 
 注意：不建议在大多数公共机房的 Windows 计算机上使用 UTMC，因为许多机器搭载的是经过定制的 Windows 系统，USB 端口适配性较低，可能出现 ADB 无法读取到您的设备的情况。对此我们并无解决方案，该问题也并非由 UTMC 及其插件的不完整性或不稳定性导致。建议您使用配备正版 Windows 操作系统（Windows 7 的较后期稳定版本、Windows 8.1 稳定版本与 Windows 10 稳定版本）的个人电脑操作 UTMC！
 
