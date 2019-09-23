@@ -127,14 +127,6 @@ int main() {
 		exit(0);
 	}
 	cout << endl << "正在初始化 ADB 服务端...\n";
-	cout << "您是否在上一次桌面及 Ubuntu Touch 设备休眠或关机后使用过 Ubuntu Touch 设备管理（或 ADB）？\n1. 是的\n2. 并没有\n--> ";
-	cin >> choice;
-	cin.get();
-	if (choice == 1) cout << endl;
-	else if (choice == 2) {
-		system("adb kill-server");
-		system("adb start-server");
-	}
 	while (1) {
 		system("adb devices");
 		cout << "您的 Ubuntu Touch 设备是否被识别正确？\n1、是的\n2、再试一次\n3、我的设备处于刷机模式\n--> ";
