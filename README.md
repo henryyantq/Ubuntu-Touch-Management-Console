@@ -10,8 +10,7 @@ Connect your Ubuntu Touch device to your computer and manage it with UT Manageme
 - Libertine Container Management
 - Bootloader (Fastboot mode) related operations
 - More features will be added in the future
-- There may be some bugs at present, please understand. I'm still a rookie LOL! Thanks for your support and suggestions (if you have)!!!
-- LICENSE HAS BEEN ADDED! You can find it on another branch if you want ^_^
+- There may be some bugs at present, please understand. I'm still a rookie LOL! Thanks for your support and suggestions (if you have)!
 
 Note: Whether Anbox related operations can be done depends on whether the Android emulator on your Ubuntu Touch device is working properly. If the operations fail, in most cases you might need to check if the Anbox on your UT device really works properly or not.
 
