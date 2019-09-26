@@ -1,20 +1,22 @@
 # Ubuntu-Touch-Management-Console
 Connect your Ubuntu Touch device to your computer and manage it with UT Management Console.
+将你的 Ubuntu Touch 设备连接至电脑并使用 Ubuntu Touch 设备管理终端进行操作。
 
-- File transfer
-- Export & import photo album(s)
-- Import videos & music (files or folder)
-- External data backup
-- Terminal operations
-- Anbox (Android-in-a-box) related operations
-- Libertine Container Management
-- Bootloader (Fastboot mode) related operations
-- More features will be added in the future
-- There may be some bugs at present, please understand. I'm still a rookie LOL! Thanks for your support and suggestions (if you have)!
+- File transfer（一般文件传输）
+- Export & import photo album(s)（导入/导出相册）
+- Import videos & music (files or folder)（导入多媒体文件）
+- External data backup（用户/外部数据备份）
+- Terminal operations（终端访问操作）
+- Anbox (Android-in-a-box) related operations（Anbox 安卓仿真运行环境相关操作）
+- Libertine Container Management（Libertine 桌面应用程序容器管理）
+- Bootloader (Fastboot mode) related operations（工程/刷机模式相关操作）
+- More features will be added in the future. 更多的功能将逐渐推出。
+- There may be some bugs at present, please understand. I'm still a rookie LOL! Thanks for your support and suggestions (if you have)! 目前可能存在一些程序问题，请谅解。我还是个开发小白 o(╥﹏╥)o 感谢你的支持！如果有任何建议或意见，请留言，谢谢！
 
-Note: Whether Anbox related operations can be done depends on whether the Android emulator on your Ubuntu Touch device is working properly. If the operations fail, in most cases you might need to check if the Anbox on your UT device really works properly or not.
+Note: Whether Anbox related operations can be done depends on whether the Android emulator on your Ubuntu Touch device is working properly. If the operations fail, in most cases you might need to check if the Anbox on your UT device really works properly or not.（Anbox 安卓仿真运行环境相关操作的使用取决于您的设备是否支持 Anbox。程序中对 Anbox 支持的机型有所列举。你可以通过程序安装/重装 Anbox 运行环境。如果你已经正确安装了 Anbox，但程序读取 Anbox 时出现 Anbox 异常或无法正常进行 Anbox 相关操作，这可能是由于你设备中的 Anbox 运行环境暂时无法正常运行。你可以选择跟从程序的指示进行相关修复操作。）
 
 This programme is only for Windows! I'll rewrite the terminal pipe operation to add support for Mac soon!
+本程序目前仅支持在 Windows 系统下运行！我会在后续为更多的桌面平台提供支持！
 
 About Wget: So far, Wget for UTMC must be placed under the folder where ADB setups are. If you place it under System32 directly, UTMC might not be able to detect and launch related options correctly in some cases.
 
